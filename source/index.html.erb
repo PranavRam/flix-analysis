@@ -2,6 +2,12 @@
 title: Flix Analysis
 ---
 
+<div class="ui inverted menu">
+  <a class="active item">
+    Flix Analysis
+  </a>
+</div>
+
 <div class="ui red vertical demo sidebar menu">
   <a class="item">
     <i class="home icon"></i>
@@ -35,33 +41,64 @@ title: Flix Analysis
     </div> -->
   </div>
   <div class="fifteen wide column">
-  	<div class="ui inverted menu">
-  	  <a class="active item">
-  	    Flix Analysis
-  	  </a>
-  	</div>
   	<div class="row">
-  		<div class="ui segment">
-  			<div ng-controller="myCtrl">
-  					<div class="ui menu">
-  					  <a class="active item">
-  					    <!-- <i class="home icon"></i> --> Flix Graphology
-  					  </a>
-  					  <!-- <a class="item">
-  					    <i class="mail icon"></i> Messages
-  					  </a> -->
-  					  <div class="right menu">
-  					    <div class="item">
-  					      <div class="ui icon input">
-  					        <input type="text" placeholder="Search...">
-  					        <i class="search link icon"></i>
-  					      </div>
-  					    </div>
-  					  </div>
-  					</div>
-  			    <nvd3 options="options" data="data"></nvd3>
-  			</div>
+  		<div class="ui menu">
+  		  <div class="item">
+  		    <!-- <i class="home icon"></i> --> <div class="ui ribbon label">Flix Graphology</div>
+  		  </div>
+  		  <!-- <a class="item">
+  		    <i class="mail icon"></i> Messages
+  		  </a> -->
+  		  <div class="item">
+  		  	<div class="ui form">
+  		  	  <div class="grouped inline fields">
+  		  	    <div class="field">
+  		  	    	<div>Bubble Color</div>
+  		  	    	<br>
+  		  	      <div class="ui radio checkbox">
+  		  	        <input type="radio" name="bubble_type" checked="">
+  		  	        <label>Critique</label>
+  		  	      </div>
+  		  	    </div>
+  		  	    <div class="field">
+  		  	      <div class="ui radio checkbox">
+  		  	        <input type="radio" name="bubble_type">
+  		  	        <label>Genre</label>
+  		  	      </div>
+  		  	    </div>
+  		  	  </div>
+  		  	</div>
+  		  </div>
+  		  <div class="item">
+  		  	<div class="ui form">
+  		  	  <div class="grouped inline fields">
+  		  	    <div class="field">
+  		  	    	<div>Bubble Size</div>
+  		  	    	<br>
+  		  	      <div class="ui radio checkbox">
+  		  	        <input type="radio" name="bubble_size" checked="">
+  		  	        <label>Production Cost</label>
+  		  	      </div>
+  		  	    </div>
+  		  	    <div class="field">
+  		  	      <div class="ui radio checkbox">
+  		  	        <input type="radio" name="bubble_size">
+  		  	        <label>Revenue</label>
+  		  	      </div>
+  		  	    </div>
+  		  	  </div>
+  		  	</div>
+  		  </div>
+  		  <div class="right menu">
+  		    <div class="item">
+  		      <div class="ui icon input">
+  		        <input type="text" placeholder="Search...">
+  		        <i class="search link icon"></i>
+  		      </div>
+  		    </div>
+  		  </div>
   		</div>
+  		<div id="chart-container"></div>
   	</div>
   	<div class="row">
   		<div class="ui three column grid">

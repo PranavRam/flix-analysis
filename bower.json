@@ -1,0 +1,19 @@
+{
+  "name": "flix_analysis",
+  "version": "0.0.0",
+  "authors": [
+    "Pranav Ram <pranav.ram7@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-nvd3": "~0.0.9"
+  }
+}

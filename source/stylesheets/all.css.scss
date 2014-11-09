@@ -1,5 +1,5 @@
 //= require nvd3/nv.d3.css
-
+//= require angular-treemap.scss
 @import "semantic-ui";
 @charset "utf-8";
 
@@ -30,4 +30,8 @@
 .link {
   stroke: #000;
   stroke-opacity: .8;
+}
+
+.title {
+  font-style: bold;
 }

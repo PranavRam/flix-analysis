@@ -9,24 +9,48 @@ title: Flix Analysis
 </div>
 
 <div class="ui red vertical demo sidebar menu">
-  <a class="item">
-    <i class="home icon"></i>
-    Home
-  </a>
-  <a class="active item">
-    <i class="heart icon"></i>
-    Current Section
-  </a>
-  <a class="item">
-    <i class="facebook icon"></i>
-    Like us on Facebook
-  </a>
+	<div class="item">
+		<img class="rounded ui image" src="http://intra.burltwpsch.org/Copy%20of%20users/dyeager/Web%20Design/Web%20Page%20Creation%20Class/2010-2011/S2/WPC12/thumbnail%20table/Inception-movie-poster.jpg">
+	</div>
   <div class="item">
-    <b>More</b>
-    <div class="menu">
-      <a class="item">About</a>
-      <a class="item">Contact Us</a>
-    </div>
+  	<div class="ui list">
+  	  <div class="item">
+  	    <div class="header">Genre</div>
+  	    Action, Drama
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Revenue</div>
+  	    $500 million
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Profit</div>
+  	    $300 million
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Rotten Tomato Rating</div>
+  	    93%
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">IMDB Rating</div>
+  	    9.4
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Release Date</div>
+  	    May 7th, 2011
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Run time</div>
+  	    132 mins
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Country</div>
+  	    U.S.A
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Language</div>
+  	    English
+  	  </div>
+  	</div>
   </div>
 </div>
 
@@ -98,15 +122,32 @@ title: Flix Analysis
   		    </div>
   		  </div>
   		</div>
-  		<div id="chart-container"></div>
+      <div ng-controller="graphCtrl">
+        <!-- <graph data="data"></graph> -->
+      </div>
+      <!-- <div ng-controller="treeCtl">
+            <div treemap="tree"
+              name="formatName(name)"
+              detail="onDetail(node)"
+              colorLow="rgb(178, 34, 0)"
+              colorMid="rgb(236, 212, 32)"
+              colorHigh="rgb(56, 96, 54)"></div>
+          </div> -->
   	</div>
   	<div class="row">
   		<div class="ui three column grid">
   			<div class="column">
   				<div class="ui segment">
   					<div ng-controller="discreteBarChartCtrl">
+                <nvd3 options="options" data="data"></nvd3>
+            </div>
+            <!-- <div ng-controller="lineChartCtrl">
   					    <nvd3 options="options" data="data"></nvd3>
-  					</div>
+  					</div> -->
+            <!-- <div id="viz"></div> -->
+            <!-- <div ng-controller="scatterChartCtrl">
+                <nvd3 options="options" data="data"></nvd3>
+            </div> -->
   				</div>
   			</div>
   			<div class="column">
@@ -125,5 +166,38 @@ title: Flix Analysis
   			</div>
   		</div>
   	</div>
+    <div class="row">
+      <div class="ui three column grid">
+        <div class="column">
+          <div class="ui segment">
+            <!-- <div ng-controller="discreteBarChartCtrl">
+                <nvd3 options="options" data="data"></nvd3>
+            </div> -->
+            <div ng-controller="lineChartCtrl">
+                <nvd3 options="options" data="data"></nvd3>
+            </div>
+            <!-- <div id="viz"></div> -->
+            <!-- <div ng-controller="scatterChartCtrl">
+                <nvd3 options="options" data="data"></nvd3>
+            </div> -->
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment">
+            <!-- <div ng-controller="scatterChartCtrl">
+                <nvd3 options="options" data="data"></nvd3>
+            </div> -->
+            <div id="viz"></div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment">
+            <div ng-controller="multiBarChartCtrl">
+                <nvd3 options="options" data="data"></nvd3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

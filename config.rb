@@ -50,6 +50,7 @@
 require 'semantic-ui-sass'
 
 set :css_dir, 'stylesheets'
+set :semantic_ui, 'semantic-ui'
 
 set :js_dir, 'javascripts'
 

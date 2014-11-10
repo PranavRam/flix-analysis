@@ -9,6 +9,57 @@ angular.module('myApp').controller('graphCtrl', ['$scope', '$http', function($sc
     });
 }]);
 
+angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
+    // $scope.data = {};
+    dataFactory.promise.then(function(){
+        var actorNames = _.uniq(_.flatten($rootScope.movies_db().select('actor_names')));
+        var directorNames = _.uniq($rootScope.movies_db().select('director'));
+        // console.log(actorNames);
+        var actors = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          // `states` is an array of state names defined in "The Basics"
+          local: $.map(actorNames, function(actor) { return { value: actor }; })
+        });
+         
+        var directors = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          // `states` is an array of state names defined in "The Basics"
+          local: $.map(directorNames, function(director) { return { value: director }; })
+        });
+        // kicks off the loading/processing of `local` and `prefetch`
+        actors.initialize();
+        directors.initialize();
+         
+        $('.typeahead').typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+        },
+        {
+          name: 'actors',
+          displayKey: 'value',
+          // `ttAdapter` wraps the suggestion engine in an adapter that
+          // is compatible with the typeahead jQuery plugin
+          source: actors.ttAdapter(),
+          templates: {
+              header: '<h3 class="heading">Actors</h3>'
+            }
+        },
+        {
+          name: 'directors',
+          displayKey: 'value',
+          // `ttAdapter` wraps the suggestion engine in an adapter that
+          // is compatible with the typeahead jQuery plugin
+          source: directors.ttAdapter(),
+          templates: {
+              header: '<h3 class="heading">Directors</h3>'
+            }
+        });
+    }, function(error){});
+}]);
+
 angular.module('myApp')
     .controller('discreteBarChartCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
         /*$http.defaults.headers.common = {
@@ -61,35 +112,6 @@ angular.module('myApp')
             }
         };
 
-        /*$scope.data = [{
-            key: "Cumulative Return",
-            values: [{
-                "label": "Drama",
-                "value": 50
-            }, {
-                "label": "Documentary",
-                "value": 0
-            }, {
-                "label": "Comedy",
-                "value": 0
-            }, {
-                "label": "Romance",
-                "value": 0
-            }, {
-                "label": "Crime",
-                "value": 0
-            }, {
-                "label": "Thriller",
-                "value": 0
-            }, {
-                "label": "Horror",
-                "value": 0
-            }, {
-                "label": "Action",
-                "value": 30
-            }]
-        }];*/
-
         var updateData = function() {
             var movies_data = $rootScope.movies_db({
                 actor_names: {
@@ -102,7 +124,7 @@ angular.module('myApp')
             }).rollup(function(d) {
                 return d.length;
             }).entries(movies_data);
-            console.log(movies_d);
+            // console.log(movies_d);
             // $scope.$apply(function(){
             $scope.data = [{
                 key: 'Data',
@@ -245,12 +267,12 @@ angular.module('myApp')
         });
         $scope.tree = {}
     })
-    .controller('lineChartCtrl', function($scope) {
+    .controller('lineChartCtrl', ['$rootScope', '$scope', 'dataFactory', function($rootScope, $scope, dataFactory) {
         var format = d3.time.format("%Y-%m-%d");
         $scope.options = {
             chart: {
                 type: 'lineChart',
-                height: 450,
+                height: 350,
                 margin: {
                     top: 20,
                     right: 40,
@@ -267,20 +289,20 @@ angular.module('myApp')
                 // useInteractiveGuideline: true,
                 dispatch: {
                     stateChange: function(e) {
-                        console.log("stateChange");
+                        // console.log("stateChange");
                     },
                     changeState: function(e) {
-                        console.log("changeState");
+                        // console.log("changeState");
                     },
                     tooltipShow: function(e) {
-                        console.log("tooltipShow");
+                        // console.log("tooltipShow");
                     },
                     tooltipHide: function(e) {
-                        console.log("tooltipHide");
+                        // console.log("tooltipHide");
                     }
                 },
                 xAxis: {
-                    axisLabel: 'Time (Release Date)',
+                    axisLabel: 'Release Date',
                     tickFormat: function(d) {
                         return format(new Date(d)); // returns a string
                         // return d3.format('.0f')(d.x);
@@ -298,59 +320,46 @@ angular.module('myApp')
                 },
                 tooltipContent: function(key, x, y, e, graph) { //return html content
                     // console.log(e.point.movie);
-                    return '<h3>' + e.point.movie + '</h3>' +
+                    return '<h3>' + e.point.title + '</h3>' +
                         '<p>Rated ' + y + '% - Released on ' + format(new Date(x)) + '</p>'
                 }
             }
-            /*,
-                            title: {
-                                enable: true,
-                                text: 'Title for Line Chart'
-                            },
-                            subtitle: {
-                                enable: true,
-                                text: 'Subtitle for simple line chart. Lorem ipsum dolor sit amet, at eam blandit sadipscing, vim adhuc sanctus disputando ex, cu usu affert alienum urbanitas.',
-                                css: {
-                                    'text-align': 'center',
-                                    'margin': '10px 13px 0px 7px'
-                                }
-                            },
-                            caption: {
-                                enable: true,
-                                html: '<b>Figure 1.</b> Lorem ipsum dolor sit amet, at eam blandit sadipscing, <span style="text-decoration: underline;">vim adhuc sanctus disputando ex</span>, cu usu affert alienum urbanitas. <i>Cum in purto erat, mea ne nominavi persecuti reformidans.</i> Docendi blandit abhorreant ea has, minim tantas alterum pro eu. <span style="color: darkred;">Exerci graeci ad vix, elit tacimates ea duo</span>. Id mel eruditi fuisset. Stet vidit patrioque in pro, eum ex veri verterem abhorreant, id unum oportere intellegam nec<sup>[1, <a href="https://github.com/krispo/angular-nvd3" target="_blank">2</a>, 3]</sup>.',
-                                css: {
-                                    'text-align': 'justify',
-                                    'margin': '10px 13px 0px 7px'
-                                }
-                            }*/
         };
-        var movies = [
-            "What's Eating Gilbert Grape",
-            "The Departed",
-            "The Aviator",
-            "Catch Me If You Can",
-            "Titanic",
-            "Critters 3",
-            "Celebrity",
-            "The Beach",
-            "The Basketball Diaries",
-            "The Man in the Iron Mask"
-        ];
-        // movies.reverse();
-        $scope.data = [{
-            values: [89, 92, 87, 87, 88, 70, 90, 87, 80].map(
-                function(value, i) {
-                    // console.log(new Date(2007 + i, 0, 1));
-                    return {
-                        x: new Date(2007 + i, 0, 1),
-                        y: value,
-                        movie: movies[i]
-                    }
-                }),
-            key: 'Rating',
-            color: '#ff7f0e'
-        }];
-    })
+
+        var updateData = function() {
+            var movies_data = $rootScope.movies_db({
+                actor_names: {
+                    has: dataFactory.actorName
+                }
+            }).order('release_date').get();
+            // console.log(movies_data);
+            movies_d = movies_data.map(function(movie){
+                return {
+                    x: new Date(movie.release_date),
+                    y: movie.critic_rating,
+                    title: movie.title
+                }
+            });
+            // console.log(movies_d);
+            // $scope.$apply(function(){
+            $scope.data = [{
+                key: 'Rating',
+                color: '#ff7f0e',
+                values: movies_d
+            }];
+        };
+
+        dataFactory.promise.then(function(data) {
+            $scope.$watch(function() {
+                return dataFactory.actorName;
+            }, function(n, o) {
+                // console.log(dataFactory.actorName);
+                updateData();
+            })
+        }, function(error) {
+
+        });
+    }])
     .controller('multiBarChartCtrl', function($scope) {
 
         $scope.options = {

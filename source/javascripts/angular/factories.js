@@ -2,6 +2,7 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
     var promise = $http.get('data/movies.json').
         success(function(data, status, headers, config) {
           $rootScope.movies_db = TAFFY(data);
+          movies_db = $rootScope.movies_db;
         }).
         error(function(data, status, headers, config) {
           // log error

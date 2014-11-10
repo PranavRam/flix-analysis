@@ -1,5 +1,8 @@
 //= require taffydb/taffy.js
 //= require jquery
+//= require underscore
+//= require typeahead.js/dist/bloodhound.js
+//= require typeahead.js/dist/typeahead.jquery.js
 //= require angular/angular.js
 //= require d3/d3.js
 //= require nvd3/nv.d3.js
@@ -18,7 +21,7 @@ $(function() {
     $('.ui.button').on('click', function() {
         $('.ui.sidebar').sidebar('toggle');
     });
-
+     
     /* Bubble Chart*/
     /*var sample_data = [{
         "value": 250,

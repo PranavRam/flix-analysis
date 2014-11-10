@@ -9,6 +9,7 @@
 //= require d3plus.full
 //= require angular-nvd3/dist/angular-nvd3.js
 //= require semantic-ui
+//= require jquery-address/src/jquery.address.js
 //= require angular-treemap
 //= require angular/app
 //= require angular/directives
@@ -21,57 +22,10 @@ $(function() {
     $('.ui.button').on('click', function() {
         $('.ui.sidebar').sidebar('toggle');
     });
-     
+    $('.demo.menu .item').tab();
     /* Bubble Chart*/
-    /*var sample_data = [{
-        "value": 250,
-        "genre": "Drama",
-        "name": "The Dark Knight Rises",
-        "group": "Revenue (In Millions)"
-    }, {
-        "value": 160,
-        "genre": "Drama",
-        "name": "Inception",
-        "group": "Revenue (In Millions)"
-    }, {
-        "value": 185,
-        "genre": "Action",
-        "name": "The Dark Knight",
-        "group": "Revenue (In Millions)"
-    }, {
-        "value": 160,
-        "genre": "Drama",
-        "name": "The Prestige",
-        "group": "Revenue (In Millions)"
-    }, {
-        "value": 150,
-        "genre": "Drama",
-        "name": "Batman Begins",
-        "group": "Revenue (In Millions)"
-    }, {
-        "value": 46,
-        "genre": "Action",
-        "name": "Insomnia",
-        "group": "Revenue (In Millions)"
-    }];*/
 
-    // instantiate d3plus
-    /*var visualization = d3plus.viz()
-        .container("#viz") // container DIV to hold the visualization
-        .data(sample_data) // data to use with the visualization
-        .type("bubbles") // visualization type
-        .id(["group", "genre"]) // nesting keys
-        .depth(1) // 0-based depth
-        .size("value") // key name to size bubbles
-        .color("genre") // color by each group
-        .legend({
-            "size": 70
-        })
-        // .text("genre")
-        .height(350)
-        .draw() // finally, draw the visualization!*/
-
-    var sample_data = [
+    /*var sample_data = [
         {"critique": 87, "production": 250, "movie": "The Dark Knight Rises"},
         {"critique": 85, "production": 160, "movie": "Inception"},
         {"critique": 40, "production": 40, "movie": "The Dark Knight"},
@@ -89,5 +43,5 @@ $(function() {
         .x("critique")         // key for x-axis
         .y("production")        // key for y-axis
         .height(350)
-        .draw()             // finally, draw the visualization!
+        .draw()             // finally, draw the visualization!*/
 });

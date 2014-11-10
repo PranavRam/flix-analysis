@@ -3,14 +3,53 @@ angular.module('myApp').controller('graphCtrl', ['$scope', '$http', function($sc
     $http.get('data/films.json').
     success(function(data, status, headers, config) {
         $scope.data = data;
+        $scope.data.links = $scope.data.links.map(function(links){
+            return {
+                source: $scope.data.nodes[links.source],
+                target: $scope.data.nodes[links.target]
+            }
+        })
     }).
     error(function(data, status, headers, config) {
         // log error
     });
 }]);
 
+angular.module('myApp').controller('treeMapCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
+    var updateData = function() {
+        var movies_data = $rootScope.movies_db({
+            actor_names: {
+                has: dataFactory.actorName
+            }
+        }).get();
+
+        movies_data = movies_data.map(function(movie){
+            return {
+                value: +movie.production_cost,
+                genre: movie.genre[0],
+                name: movie.title,
+                // group: 'Production Cost'
+            }
+        });
+        $scope.data = movies_data;
+    };
+
+    dataFactory.promise.then(function(data) {
+        $scope.$watch(function() {
+            return dataFactory.actorName;
+        }, function(n, o) {
+            // console.log(dataFactory.actorName);
+            updateData();
+        })
+    }, function(error) {
+
+    });
+}]);
+
 angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
-    // $scope.data = {};
+    $scope.actor_director = 'actor';
+    $scope.critique_genre = 'genre';
+    $scope.production_revenue = 'production';
     dataFactory.promise.then(function(){
         var actorNames = _.uniq(_.flatten($rootScope.movies_db().select('actor_names')));
         var directorNames = _.uniq($rootScope.movies_db().select('director'));
@@ -61,26 +100,43 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
 }]);
 
 angular.module('myApp')
-    .controller('discreteBarChartCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
-        /*$http.defaults.headers.common = {
-            'X-Parse-Application-Id': 'Tuu2ar77cy4IyW2rzVFNtkuEOxlAkn0VgsWSk8GJ',
-            'X-Parse-REST-API-Key': '7BUWQMhlhwDBL2OxzKczo4sLXyQwaQizz3qNGjNe'
-        }
-        var request = $http({
-            method: "get",
-            url: "https://api.parse.com/1/classes/Movie",
-            params: {
-                include: ['actors', 'actors.movies']
-            }
+    .controller('productionRoleCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
+
+        var updateData = function() {
+            var movies_data = $rootScope.movies_db({
+                actor_names: {
+                    has: dataFactory.actorName
+                }
+            }).get();
+
+            movies_data = movies_data.map(function(movie){
+                return {
+                    value: +movie.production_cost,
+                    genre: movie.genre[0],
+                    name: movie.title,
+                    group: 'Production Cost'
+                }
+            });
+            console.log(movies_data);
+            $scope.data = movies_data;
+        };
+
+        dataFactory.promise.then(function(data) {
+            $scope.$watch(function() {
+                return dataFactory.actorName;
+            }, function(n, o) {
+                // console.log(dataFactory.actorName);
+                updateData();
+            })
+        }, function(error) {
+
         });
 
-        request.then(function(response) {
-            console.log(response.data);
-
-        }, function(error) {
-            console.log(error)
-        });*/
-
+        /*$timeout(function() {
+            dataFactory.setActorName("Sam Worthington");
+        }, 3500);*/
+    }])
+    .controller('discreteBarChartCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
         $scope.options = {
             chart: {
                 type: 'discreteBarChart',

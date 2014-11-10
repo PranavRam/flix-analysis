@@ -76,37 +76,57 @@ title: Flix Analysis
   		  <div class="item">
   		  	<div class="ui form">
   		  	  <div class="grouped inline fields">
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" name="name" ng-model="critique_genre" value="genre">
+                  <label>Genre</label>
+                </div>
+              </div>
   		  	    <div class="field">
-  		  	    	<div>Bubble Color</div>
-  		  	    	<br>
+  		  	    	<!-- <div>Bubble Color</div>
+  		  	    	<br> -->
   		  	      <div class="ui radio checkbox">
-  		  	        <input type="radio" name="bubble_type" checked="">
+  		  	        <input type="radio" name="name" ng-model="critique_genre" value="critique">
   		  	        <label>Critique</label>
-  		  	      </div>
-  		  	    </div>
-  		  	    <div class="field">
-  		  	      <div class="ui radio checkbox">
-  		  	        <input type="radio" name="bubble_type">
-  		  	        <label>Genre</label>
   		  	      </div>
   		  	    </div>
   		  	  </div>
   		  	</div>
   		  </div>
+        <div class="item">
+          <div class="ui form">
+            <div class="grouped inline fields">
+              <div class="field">
+                <!-- <div>Bubble Color</div>
+                <br> -->
+                <div class="ui radio checkbox">
+                  <input type="radio" name="name1" ng-model="actor_director" value="actor">
+                  <label>Actor</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio"name="name1" ng-model="actor_director" value="director">
+                  <label>Director</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
   		  <div class="item">
   		  	<div class="ui form">
   		  	  <div class="grouped inline fields">
   		  	    <div class="field">
-  		  	    	<div>Bubble Size</div>
-  		  	    	<br>
+  		  	    	<!-- <div>Bubble Size</div>
+  		  	    	<br> -->
   		  	      <div class="ui radio checkbox">
-  		  	        <input type="radio" name="bubble_size" checked="">
+  		  	        <input type="radio" name="name2" ng-model="production_revenue" value="production">
   		  	        <label>Production Cost</label>
   		  	      </div>
   		  	    </div>
   		  	    <div class="field">
   		  	      <div class="ui radio checkbox">
-  		  	        <input type="radio" name="bubble_size">
+  		  	        <input type="radio" name="name2" ng-model="production_revenue" value="revenue">
   		  	        <label>Revenue</label>
   		  	      </div>
   		  	    </div>
@@ -122,9 +142,23 @@ title: Flix Analysis
   		    </div>
   		  </div>
   		</div>
-      <div ng-controller="graphCtrl">
-        <!-- <graph data="data"></graph> -->
+    </div>
+    <div class="row">
+      <div class="ui pointing secondary demo menu">
+        <a class="active red item" data-tab="first">Network Graph</a>
+        <a class="blue item" data-tab="second">Detail Treemap</a>
       </div>
+      <div class="ui active tab segment" data-tab="first">
+        <div ng-controller="graphCtrl">
+          <graphd3plus data="data"></graphd3plus>
+        </div>
+      </div>
+      <div class="ui tab segment" data-tab="second">
+        <div ng-controller="treeMapCtrl">
+          <tree-map></tree-map>
+        </div>
+      </div>
+    </div>
       <!-- <div ng-controller="treeCtl">
             <div treemap="tree"
               name="formatName(name)"
@@ -133,9 +167,12 @@ title: Flix Analysis
               colorMid="rgb(236, 212, 32)"
               colorHigh="rgb(56, 96, 54)"></div>
           </div> -->
-  	</div>
+      <!-- <div ng-controller="treeMapCtrl">
+        <tree-map></tree-map>
+      </div> -->
+  	<!-- </div> -->
   	<div class="row">
-  		<div class="ui three column grid">
+  		<div class="ui two column grid">
   			<div class="column">
   				<div class="ui segment">
   					<div ng-controller="discreteBarChartCtrl">
@@ -152,18 +189,21 @@ title: Flix Analysis
   			</div>
   			<div class="column">
   				<div class="ui segment">
-  					<div ng-controller="scatterChartCtrl">
+            <div ng-controller="productionRoleCtrl">
+              <bubble-chart><bubble-chart>
+            </div>
+  					<!-- <div ng-controller="scatterChartCtrl">
   					    <nvd3 options="options" data="data"></nvd3>
-  					</div>
+  					</div> -->
   				</div>
   			</div>
-  			<div class="column">
+  			<!-- <div class="column">
   				<div class="ui segment">
   					<div ng-controller="pieChartCtrl">
   					    <nvd3 options="options" data="data"></nvd3>
   					</div>
   				</div>
-  			</div>
+  			</div> -->
   		</div>
   	</div>
     <div class="row">
@@ -184,10 +224,10 @@ title: Flix Analysis
         </div>
         <div class="column">
           <div class="ui segment">
-            <!-- <div ng-controller="scatterChartCtrl">
+            <div ng-controller="scatterChartCtrl">
                 <nvd3 options="options" data="data"></nvd3>
-            </div> -->
-            <div id="viz"></div>
+            </div>
+            <!-- <div id="viz"></div> -->
           </div>
         </div>
         <div class="column">

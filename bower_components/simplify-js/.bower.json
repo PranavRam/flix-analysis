@@ -1,0 +1,13 @@
+{
+  "name": "simplify-js",
+  "homepage": "https://github.com/mourner/simplify-js",
+  "_release": "feb3034659",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "feb30346590ee077bf8deba57a65b8c34eec16d0"
+  },
+  "_source": "git@github.com:mourner/simplify-js.git",
+  "_target": "*",
+  "_originalSource": "git@github.com:mourner/simplify-js.git"
+}

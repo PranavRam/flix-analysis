@@ -6,7 +6,7 @@
 //= require angular/angular.js
 //= require d3/d3.js
 //= require nvd3/nv.d3.js
-//= require d3plus.full
+//= require d3plus/d3plus.full.min.js
 //= require angular-nvd3/dist/angular-nvd3.js
 //= require semantic-ui
 //= require jquery-address/src/jquery.address.js

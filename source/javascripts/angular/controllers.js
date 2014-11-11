@@ -28,7 +28,7 @@ angular.module('myApp').controller('treeMapCtrl', ['$rootScope', '$scope', '$htt
                 value: +movie.production_cost,
                 genre: movie.genre[0],
                 name: movie.title,
-                // group: 'Production Cost'
+                revenue: +movie.domestic_revenue
             }
         });
         $scope.data = movies_data;

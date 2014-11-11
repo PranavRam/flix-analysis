@@ -7,16 +7,17 @@ angular.module('myApp').directive('treeMap', function() {
         console.log('yo', $('.fifteen.wide.column .row')[0].clientWidth);
         // update();
         var visualization;
+
         function update() {
-              visualization = d3plus.viz()
+            visualization = d3plus.viz()
                 .container(d3.select($el[0]))
                 .data($scope.data)
                 .type("tree_map")
-                .id(["genre","name"])
+                .id(["genre", "name"])
                 .size("value")
                 .height(600)
-                .width($('.fifteen.wide.column .row')[0].clientWidth-50)
-                .draw()
+                .width($('.fifteen.wide.column .row')[0].clientWidth - 50)
+                .draw();
         }
 
         $(window).on("resize", function() {
@@ -49,7 +50,10 @@ angular.module('myApp').directive('bubbleChart', function() {
                 .legend({
                     "size": 70
                 })
-                .text({"id":"name","genre":"genre"})
+                .text({
+                    "id": "name",
+                    "genre": "genre"
+                })
                 .height(350)
                 .draw() // finally, draw the visualization!
         }
@@ -69,8 +73,8 @@ angular.module('myApp').directive('graphd3plus', function() {
         // console.log($el);
         // instantiate d3plus
         // update();
-        function update() {       
-              var visualization = d3plus.viz()
+        function update() {
+            var visualization = d3plus.viz()
                 .container(d3.select($el[0]))
                 .type("network")
                 .data($scope.data.nodes)
@@ -81,6 +85,10 @@ angular.module('myApp').directive('graphd3plus', function() {
                 // .text({"id":"name"})
                 .legend(false)
                 .height(600)
+                .focus({
+                    tooltip: true,
+                    value: "Steven Spielberg"
+                })
                 .draw()
 
         }

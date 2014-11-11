@@ -1,0 +1,12 @@
+{
+  "name": "static-kdtree",
+  "homepage": "https://github.com/mikolalysenko/static-kdtree",
+  "_release": "ce6e639c33",
+  "_resolution": {
+    "type": "commit",
+    "commit": "ce6e639c333fbab310fa44a3587b4bfdf10dbd4b"
+  },
+  "_source": "git@github.com:mikolalysenko/static-kdtree.git",
+  "_target": "ce6e639c333fbab310fa44a3587b4bfdf10dbd4b",
+  "_originalSource": "git@github.com:mikolalysenko/static-kdtree.git"
+}

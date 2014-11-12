@@ -12,6 +12,7 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
         actorName: "Leonardo DiCaprio",
         setActorName: function(name){
           this.actorName = name;
+          $rootScope.$broadcast('actor:updated',data);
         },
         promise: promise
     };

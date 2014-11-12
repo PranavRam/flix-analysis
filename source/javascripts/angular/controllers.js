@@ -95,6 +95,12 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
           templates: {
               header: '<h3 class="heading">Directors</h3>'
             }
+        }).bind("typeahead:selected", function(obj, datum, name) {
+            if(name === 'actors'){
+                dataFactory.setActorName(datum.value);
+                // console.log('1', datum.value);
+            }
+            // console.log(obj, datum, name);
         });
     }, function(error){});
 }]);
@@ -117,17 +123,26 @@ angular.module('myApp')
                     group: 'Production Cost'
                 }
             });
-            console.log(movies_data);
-            $scope.data = movies_data;
+            // console.log(movies_data);
+            if(!$scope.$$phase){
+                $scope.$apply(function(){
+                    $scope.data = movies_data;
+                });
+            }
         };
 
         dataFactory.promise.then(function(data) {
-            $scope.$watch(function() {
+            /*$scope.$watch(function() {
                 return dataFactory.actorName;
             }, function(n, o) {
-                // console.log(dataFactory.actorName);
+                console.log('yup', dataFactory.actorName);
                 updateData();
-            })
+            });*/
+            updateData();
+            $scope.$on('actor:updated', function(event,data) {
+             // you could inspect the data to see if what you care about changed, or just update your own scope
+             updateData();
+           });
         }, function(error) {
 
         });
@@ -137,7 +152,7 @@ angular.module('myApp')
         }, 3500);*/
     }])
     .controller('discreteBarChartCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
-        $scope.options = {
+/*        $scope.options = {
             chart: {
                 type: 'discreteBarChart',
                 height: 350,
@@ -166,7 +181,7 @@ angular.module('myApp')
                     axisLabelDistance: 25
                 }
             }
-        };
+        };*/
 
         var updateData = function() {
             var movies_data = $rootScope.movies_db({
@@ -177,15 +192,17 @@ angular.module('myApp')
 
             var movies_d = d3.nest().key(function(d) {
                 return d.genre[0];
-            }).rollup(function(d) {
+            })
+            .rollup(function(d) {
                 return d.length;
             }).entries(movies_data);
-            // console.log(movies_d);
-            // $scope.$apply(function(){
-            $scope.data = [{
-                key: 'Data',
-                values: movies_d
-            }];
+            movies_d = movies_d.map(function(movie){
+                return {
+                    genre: movie.key,
+                    value: movie.values
+                }
+            });
+            $scope.data = movies_d;
         };
 
         dataFactory.promise.then(function(data) {

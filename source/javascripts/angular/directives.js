@@ -1,10 +1,85 @@
+angular.module('myApp').directive('linePlot', function() {
+
+    var link = function($scope, $el, $attrs) {
+        var sample_data = [
+            {"year": 1991, "name":"alpha", "value": 17},
+            {"year": 1992, "name":"alpha", "value": 20},
+            {"year": 1993, "name":"alpha", "value": 25},
+            {"year": 1994, "name":"alpha", "value": 33},
+            {"year": 1995, "name":"alpha", "value": 52},
+            {"year": 1991, "name":"beta", "value": 36},
+            {"year": 1992, "name":"beta", "value": 32},
+            {"year": 1993, "name":"beta", "value": 40},
+            {"year": 1994, "name":"beta", "value": 58},
+            {"year": 1995, "name":"beta", "value": 13},
+            {"year": 1991, "name":"gamma", "value": 24},
+            {"year": 1992, "name":"gamma", "value": 27},
+            {"year": 1994, "name":"gamma", "value": 35},
+            {"year": 1995, "name":"gamma", "value": 40}
+          ]
+         function update(){
+          // instantiate d3plus
+          console.log($scope.data);
+              var visualization = d3plus.viz()
+                .container(d3.select($el[0]))  // container DIV to hold the visualization
+                .data($scope.data)  // data to use with the visualization
+                .type("line")       // visualization type
+                .id("title")         // key for which our data is unique on
+                .text("title")       // key to use for display text
+                .y("rating")         // key to use for y-axis
+                .x("Release Date")          // key to use for x-axis
+                .x({"scale": "continuous"})
+                .height(350)
+                // .time("Release Date")
+                .draw()             // finally, draw the visualization!
+            }
+         
+        $scope.$watch('data', update);
+    }
+    return {
+        template: '<div></div>',
+        restrict: 'E',
+        link: link,
+        replace: true
+    }
+});
+
+angular.module('myApp').directive('pieChart', function() {
+
+    var link = function($scope, $el, $attrs) {
+        var data = [
+           {"genre": "Drama", "value": 1},
+           {"genre": "Action", "value": 2}
+         ]
+        // update();
+        function update(){
+             var visualization = d3plus.viz()
+               .container(d3.select($el[0]))
+               .data($scope.data)
+               .type("pie")
+               .id("genre")
+               // .x("genre")
+               .size("value")
+               .height(350)
+               .draw()
+        }
+        $scope.$watch('data', update);
+    }
+    return {
+        template: '<div></div>',
+        restrict: 'E',
+        link: link,
+        replace: true
+    }
+});
+
 angular.module('myApp').directive('treeMap', function() {
 
     var link = function($scope, $el, $attrs) {
         // console.log($el);
         // instantiate d3plus
         // ele = $($el.parent());
-        console.log('yo', $('.fifteen.wide.column .row')[0].clientWidth);
+        // console.log('yo', $('.fifteen.wide.column .row')[0].clientWidth);
         // update();
         var visualization;
 
@@ -38,7 +113,9 @@ angular.module('myApp').directive('bubbleChart', function() {
     var link = function($scope, $el, $attrs) {
         // console.log($el);
         // instantiate d3plus
+        
         function update() {
+            // console.log('bubble');
             var visualization = d3plus.viz()
                 .container(d3.select($el[0])) // container DIV to hold the visualization
                 .data($scope.data) // data to use with the visualization
@@ -74,23 +151,27 @@ angular.module('myApp').directive('graphd3plus', function() {
         // instantiate d3plus
         // update();
         function update() {
-            var visualization = d3plus.viz()
-                .container(d3.select($el[0]))
-                .type("network")
-                .data($scope.data.nodes)
-                .edges($scope.data.links)
-                // .size("size")
-                .color("type")
-                .id("name")
-                // .text({"id":"name"})
-                .legend(false)
-                .height(600)
-                .focus({
-                    tooltip: true,
-                    value: "Steven Spielberg"
-                })
-                .draw()
-
+            if(typeof $scope.data != 'undefined'){
+                var visualization = d3plus.viz()
+                    .container(d3.select($el[0]))
+                    .type("network")
+                    .data($scope.data.nodes)
+                    .edges($scope.data.links)
+                    .size("weight")
+                    .color("type")
+                    .id("name")
+                    // .text({"id":"name"})
+                    .legend(false)
+                    .height(600)
+                    .focus({
+                        tooltip: true,
+                        value: "Steven Spielberg"
+                    }, function(n){
+                        // console.log(n, visualization.data());
+                        return n;
+                    })
+                    .draw();
+                }
         }
         $scope.$watch('data', update);
     }

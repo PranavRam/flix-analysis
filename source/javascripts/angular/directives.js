@@ -44,6 +44,39 @@ angular.module('myApp').directive('linePlot', function() {
     }
 });
 
+angular.module('myApp').directive('radio', ['$rootScope', '$timeout', function($rootScope, $timeout) {
+
+    var link = function($scope, $el, $attrs) {
+        
+        return $timeout(function(){
+            return $($el.parent()).checkbox({
+                    onChange: function (value) {
+                        // console.log(value, $scope[$attrs.ngModel]);
+                        if($scope[$attrs.ngModel] == 'genre'){
+                            $scope[$attrs.ngModel] = 'critique';
+                        }
+                        else if($scope[$attrs.ngModel] == 'critique'){
+                            $scope[$attrs.ngModel] = 'genre';
+                        }
+                        else if($scope[$attrs.ngModel] == 'production'){
+                            $scope[$attrs.ngModel] = 'revenue';
+                            // $rootScope.$broadcast('genre_critique:updated');
+                        }
+                        else if($scope[$attrs.ngModel] == 'revenue'){
+                            $scope[$attrs.ngModel] = 'production';
+                        }
+                        // $scope[$attrs.ngModel] = value;
+                        $scope.$apply();
+                    }
+                });
+        });
+    }
+    return {
+        require: 'ngModel',
+        link: link
+    }
+}]);
+
 angular.module('myApp').directive('pieChart', function() {
 
     var link = function($scope, $el, $attrs) {
@@ -55,7 +88,7 @@ angular.module('myApp').directive('pieChart', function() {
         function update(){
              var visualization = d3plus.viz()
                .container(d3.select($el[0]))
-               .data($scope.data)
+               .data($scope.data2)
                .type("pie")
                .id("genre")
                // .x("genre")
@@ -63,7 +96,7 @@ angular.module('myApp').directive('pieChart', function() {
                .height(350)
                .draw()
         }
-        $scope.$watch('data', update);
+        $scope.$watch('data2', update);
     }
     return {
         template: '<div></div>',
@@ -157,7 +190,7 @@ angular.module('myApp').directive('graphd3plus', function() {
                     .type("network")
                     .data($scope.data.nodes)
                     .edges($scope.data.links)
-                    .size("weight")
+                    .size("connections")
                     .color("type")
                     .id("name")
                     // .text({"id":"name"})
@@ -166,10 +199,7 @@ angular.module('myApp').directive('graphd3plus', function() {
                     .focus({
                         tooltip: true,
                         value: "Steven Spielberg"
-                    }, function(n){
-                        // console.log(n, visualization.data());
-                        return n;
-                    })
+                    }, $scope.cb)
                     .draw();
                 }
         }

@@ -78,15 +78,13 @@ title: Flix Analysis
   		  	  <div class="grouped inline fields">
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="name" ng-model="critique_genre" value="genre">
+                  <input radio type="radio" name="name" ng-model="critique_genre" value="genre">
                   <label>Genre</label>
                 </div>
               </div>
   		  	    <div class="field">
-  		  	    	<!-- <div>Bubble Color</div>
-  		  	    	<br> -->
   		  	      <div class="ui radio checkbox">
-  		  	        <input type="radio" name="name" ng-model="critique_genre" value="critique">
+  		  	        <input radio type="radio" name="name" ng-model="critique_genre" value="critique">
   		  	        <label>Critique</label>
   		  	      </div>
   		  	    </div>
@@ -120,13 +118,13 @@ title: Flix Analysis
   		  	    	<!-- <div>Bubble Size</div>
   		  	    	<br> -->
   		  	      <div class="ui radio checkbox">
-  		  	        <input type="radio" name="name2" ng-model="production_revenue" value="production">
+  		  	        <input radio type="radio" name="name2" ng-model="production_revenue" value="production">
   		  	        <label>Production Cost</label>
   		  	      </div>
   		  	    </div>
   		  	    <div class="field">
   		  	      <div class="ui radio checkbox">
-  		  	        <input type="radio" name="name2" ng-model="production_revenue" value="revenue">
+  		  	        <input radio type="radio" name="name2" ng-model="production_revenue" value="revenue">
   		  	        <label>Revenue</label>
   		  	      </div>
   		  	    </div>
@@ -175,9 +173,14 @@ title: Flix Analysis
   		<div class="ui two column grid">
   			<div class="column">
   				<div class="ui segment">
-  					<div ng-controller="discreteBarChartCtrl">
+  					<div ng-controller="genreCritiqueCtrl">
                 <!-- <nvd3 options="options" data="data"></nvd3> -->
-                <pie-chart></pie-chart>
+                <div ng-if="genre_critique == 'genre'">
+                  <pie-chart></pie-chart>
+                </div>
+                <div ng-if="genre_critique == 'critique'">
+                  <nvd3 options="options" data="data"></nvd3>
+                </div>
             </div>
             <!-- <div ng-controller="lineChartCtrl">
   					    <nvd3 options="options" data="data"></nvd3>
@@ -190,7 +193,7 @@ title: Flix Analysis
   			</div>
   			<div class="column">
   				<div class="ui segment">
-            <div ng-controller="productionRoleCtrl">
+            <div ng-controller="productionRevenueCtrl">
               <bubble-chart><bubble-chart>
             </div>
   					<!-- <div ng-controller="scatterChartCtrl">
@@ -208,15 +211,15 @@ title: Flix Analysis
   		</div>
   	</div>
     <div class="row">
-      <div class="ui three column grid">
+      <div class="ui two column grid">
         <div class="column">
           <div class="ui segment">
             <!-- <div ng-controller="discreteBarChartCtrl">
                 <nvd3 options="options" data="data"></nvd3>
             </div> -->
-            <div ng-controller="lineChartCtrl">
+            <!-- <div ng-controller="lineChartCtrl">
                 <nvd3 options="options" data="data"></nvd3>
-            </div>
+            </div> -->
             <!-- <div id="viz"></div> -->
             <!-- <div ng-controller="scatterChartCtrl">
                 <nvd3 options="options" data="data"></nvd3>
@@ -231,6 +234,10 @@ title: Flix Analysis
             <!-- <div id="viz"></div> -->
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="ui one column grid">
         <div class="column">
           <div class="ui segment">
             <div ng-controller="multiBarChartCtrl">

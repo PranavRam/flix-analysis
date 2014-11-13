@@ -18,7 +18,7 @@
 
 $(function() {
     $('.ui.sidebar').sidebar();
-    $('.ui.radio.checkbox').checkbox();
+    // $('.ui.radio.checkbox').checkbox();
     $('.ui.button').on('click', function() {
         $('.ui.sidebar').sidebar('toggle');
     });

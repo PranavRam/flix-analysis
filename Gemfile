@@ -14,3 +14,9 @@ gem "wdm", "~> 0.1.0", :platforms => [:mswin, :mingw]
 gem "tzinfo-data", platforms: [:mswin, :mingw]
 
 gem 'semantic-ui-sass', '~> 0.19.3.1', :require => false
+
+gem 'rack-contrib'
+ 
+group :development do
+  gem 'unicorn'
+end

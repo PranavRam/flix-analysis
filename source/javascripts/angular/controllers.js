@@ -313,7 +313,7 @@ angular.module('myApp')
             dataFactory.setActorName("Sam Worthington");
         }, 3500);*/
     }])
-    .controller('scatterChartCtrl', function($scope) {
+    .controller('scatterChartCtrl', ['$scope', function($scope) {
 
         $scope.options = {
             chart: {
@@ -370,8 +370,8 @@ angular.module('myApp')
             }
             return data;
         }
-    })
-    .controller('pieChartCtrl', function($scope) {
+    }])
+    .controller('pieChartCtrl', ['$scope', function($scope) {
 
         $scope.options = {
             chart: {
@@ -419,7 +419,7 @@ angular.module('myApp')
             key: "Crime",
             y: .5
         }];
-    })
+    }])
     .controller('treeCtl', function($scope, $http) {
         $scope.formatName = function(name) {
             return name;

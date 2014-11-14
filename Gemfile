@@ -3,7 +3,7 @@
 source 'http://rubygems.org'
 
 gem "middleman", "~>3.3.6"
-
+ruby '2.0.0'
 # Live-reloading plugin
 gem "middleman-livereload", "~> 3.1.0"
 
@@ -17,6 +17,5 @@ gem 'semantic-ui-sass', '~> 0.19.3.1', :require => false
 
 gem 'rack-contrib'
  
-group :development do
-  gem 'unicorn'
-end
+gem 'puma',      '~> 2.7'
+gem 'rake',      '~> 10.1'

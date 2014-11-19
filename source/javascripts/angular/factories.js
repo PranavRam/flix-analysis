@@ -18,7 +18,7 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
           genreCritique: 'genre',
           productionRevenue: 'revenue'
         },
-        actorName: "Leonardo DiCaprio",
+        actorName: "LeonardoDiCaprio",
         directorName: "Steven Spielberg",
         setActorName: function(name){
           this.actorName = name;

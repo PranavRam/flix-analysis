@@ -165,6 +165,7 @@ angular.module('myApp').directive('bubbleChart', function() {
                     "genre": "genre"
                 })
                 .height(350)
+                .zoom(true)
                 .draw() // finally, draw the visualization!
         }
         $scope.$watch('data', update);

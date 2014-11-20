@@ -93,7 +93,7 @@ angular.module('myApp').directive('pieChart', function() {
                .id("genre")
                // .x("genre")
                .size("value")
-               .height(350)
+               .height(450)
                .draw()
         }
         $scope.$watch('data2', update);
@@ -114,10 +114,8 @@ angular.module('myApp').directive('treeMap', function() {
         // ele = $($el.parent());
         // console.log('yo', $('.fifteen.wide.column .row')[0].clientWidth);
         // update();
-        var visualization;
-
         function update() {
-            visualization = d3plus.viz()
+            var visualization = d3plus.viz()
                 .container(d3.select($el[0]))
                 .data($scope.data)
                 .type("tree_map")
@@ -164,7 +162,7 @@ angular.module('myApp').directive('bubbleChart', function() {
                     "id": "name",
                     "genre": "genre"
                 })
-                .height(350)
+                .height(450)
                 .zoom(true)
                 .draw() // finally, draw the visualization!
         }

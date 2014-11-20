@@ -1,3 +1,19 @@
+angular.module('myApp').controller('movieInfoCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
+    $scope.data = {
+        title: "Inception",
+        genre: 'Action, Drama',
+        revenue: 500,
+        profit: 300,
+        rt_rating: 93,
+        imdb_rating: 9.4,
+        release_date: 'May 7th, 2011',
+        runtime: 132,
+        country: 'U.S.A',
+        language: 'English',
+        image_url: 'http://intra.burltwpsch.org/Copy%20of%20users/dyeager/Web%20Design/Web%20Page%20Creation%20Class/2010-2011/S2/WPC12/thumbnail%20table/Inception-movie-poster.jpg'
+    }
+}]);
+
 angular.module('myApp').controller('graphCtrl', ['$scope', '$http', function($scope, $http) {
     // $scope.data = {};
     $http.get('data/films.json').
@@ -37,12 +53,13 @@ angular.module('myApp').controller('treeMapCtrl', ['$rootScope', '$scope', '$htt
 
         movies_data = movies_data.map(function(movie){
             return {
-                value: +movie.production_cost,
+                value: movie.production_cost,
                 genre: movie.genre[0],
                 name: movie.title,
-                revenue: +movie.domestic_revenue
+                revenue: movie.domestic_revenue
             }
         });
+        console.log('yup', movies_data);
         $scope.data = movies_data;
     };
 
@@ -53,6 +70,12 @@ angular.module('myApp').controller('treeMapCtrl', ['$rootScope', '$scope', '$htt
             // console.log(dataFactory.actorName);
             updateData();
         })
+        $scope.$watch(function() {
+            return dataFactory.options.productionRevenue;
+        }, function(n, o) {
+            console.log(dataFactory.options.productionRevenue);
+            updateData();
+        });
     }, function(error) {
 
     });
@@ -193,11 +216,11 @@ angular.module('myApp')
     .controller('genreCritiqueCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
         $scope.genre_critique = dataFactory.options.genreCritique;
 
-        var format = d3.time.format("%Y-%m-%d");
+        var format = d3.time.format("%m/%d/%Y");
         $scope.options = {
             chart: {
                 type: 'lineChart',
-                height: 350,
+                height: 450,
                 margin: {
                     top: 20,
                     right: 40,
@@ -258,7 +281,8 @@ angular.module('myApp')
                     has: dataFactory.actorName
                 }
             }).get();
-
+            // _.sortBy(movies_data, function(o) { return o.release_date; })
+            // console.log(movies_data);
             if($scope.genre_critique == 'genre'){
                 var movies_d = d3.nest().key(function(d) {
                     return d.genre[0];
@@ -277,12 +301,12 @@ angular.module('myApp')
             else{
                 var movies_d = movies_data.map(function(movie){
                     return {
-                        x: new Date(movie.release_date),
+                        x: movie.release_date,
                         y: movie.critic_rating,
                         title: movie.title
                     }
                 });
-                // console.log(movies_d);
+                console.log(movies_d);
                 // $scope.$apply(function(){
                 $scope.data = [{
                     key: 'Rating',
@@ -318,7 +342,7 @@ angular.module('myApp')
         $scope.options = {
             chart: {
                 type: 'scatterChart',
-                height: 350,
+                height: 450,
                 color: d3.scale.category10().range(),
                 scatter: {
                     onlyCircles: false
@@ -531,7 +555,7 @@ angular.module('myApp')
         $scope.options = {
             chart: {
                 type: 'multiBarChart',
-                height: 350,
+                height: 450,
                 margin: {
                     top: 20,
                     right: 40,

@@ -54,3 +54,9 @@
     }
   }
 }
+
+.sticky-wrapper {
+  .ui.menu {
+    z-index: 3000 !important;
+  }
+}

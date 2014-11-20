@@ -1,6 +1,8 @@
 //= require taffydb/taffy.js
 //= require jquery
+//= require moment/min/moment-with-locales.js
 //= require underscore
+//= require jquery-sticky/jquery.sticky.js
 //= require typeahead.js/dist/bloodhound.js
 //= require typeahead.js/dist/typeahead.jquery.js
 //= require angular/angular.js
@@ -19,8 +21,12 @@
 $(function() {
     $('.ui.sidebar').sidebar();
     // $('.ui.radio.checkbox').checkbox();
-    $('.ui.button').on('click', function() {
+    $('#sidebar-menu').on('click', function() {
         $('.ui.sidebar').sidebar('toggle');
+    });
+    $("#sticker").sticky({
+        topSpacing:10, 
+        getWidthFrom: '.fifteen.wide.column > .row'
     });
     $('.demo.menu .item').tab();
     /* Bubble Chart*/

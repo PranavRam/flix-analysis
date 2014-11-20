@@ -160,13 +160,15 @@ angular.module('myApp').directive('scatterPlot', function() {
                    .x($scope.production_revenue)         // key for x-axis
                    .y("critique")        // key for y-axis
                    .color("genre")
-                   .tooltip(["title", "genre"])
-                   .aggs({"critique": "mean"})
+                   .aggs({"critique": "mean", "production": "mean", "revenue": "mean"})
                    .height(450)
                    .draw()             // finally, draw the visualization!*/
                }
         }
         $scope.$watch('data', update);
+        $(window).on("resize", function() {
+            update();
+        });
     }
     return {
         template: '<div></div>',

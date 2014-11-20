@@ -22,7 +22,7 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
     return {
         options: {
           genreCritique: 'genre',
-          productionRevenue: 'revenue'
+          productionRevenue: 'production'
         },
         actorName: "Leonardo DiCaprio",
         directorName: "Steven Spielberg",

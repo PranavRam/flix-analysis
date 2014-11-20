@@ -139,6 +139,46 @@ angular.module('myApp').directive('treeMap', function() {
     }
 });
 
+angular.module('myApp').directive('scatterPlot', function() {
+
+    var link = function($scope, $el, $attrs) {
+        // console.log($el);
+        // instantiate d3plus
+        // update();
+        function update() {
+            // console.log('bubble');
+           var sample_data = [
+               {"critique": 87, "production": 250, "movie": "The Dark Knight Rises"},
+               {"critique": 85, "production": 160, "movie": "Inception"},
+               {"critique": 40, "production": 40, "movie": "The Dark Knight"},
+               {"critique": 45, "production": 10, "movie": "The Prestige"},
+               {"critique": 80, "production": 150, "movie": "Batman Begins"},
+               {"critique": 92, "production": 46, "movie": "Insomnia"},
+             ]
+            
+             // instantiate d3plus
+             var visualization = d3plus.viz()
+               .container(d3.select($el[0]))  // container DIV to hold the visualization
+               .data($scope.data)  // data to use with the visualization
+               .type("scatter")      // visualization type
+               .id(["genre", "title"])         // key for which our data is unique on
+               .x($scope.production_revenue)         // key for x-axis
+               .y("critique")        // key for y-axis
+               .color("genre")
+               .tooltip(["title", "genre"])
+               .height(450)
+               .draw()             // finally, draw the visualization!*/
+        }
+        $scope.$watch('data', update);
+    }
+    return {
+        template: '<div></div>',
+        restrict: 'E',
+        link: link,
+        replace: true
+    }
+});
+
 angular.module('myApp').directive('bubbleChart', function() {
 
     var link = function($scope, $el, $attrs) {

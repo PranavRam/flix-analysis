@@ -337,9 +337,9 @@ angular.module('myApp')
             dataFactory.setActorName("Sam Worthington");
         }, 3500);*/
     }])
-    .controller('scatterChartCtrl', ['$scope', function($scope) {
+    .controller('scatterChartCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout)  {
 
-        $scope.options = {
+        /*$scope.options = {
             chart: {
                 type: 'scatterChart',
                 height: 450,
@@ -367,12 +367,12 @@ angular.module('myApp')
                     axisLabelDistance: 30
                 }
             }
-        };
+        };*/
 
-        $scope.data = generateData(1, 40);
+        // $scope.data = generateData(1, 40);
 
         /* Random Data Generator (took from nvd3.org) */
-        function generateData(groups, points) {
+        /*function generateData(groups, points) {
             var data = [],
                 shapes = ['circle'],
                 random = d3.random.normal();
@@ -393,7 +393,59 @@ angular.module('myApp')
                 }
             }
             return data;
-        }
+        }*/
+        var updateData = function() {
+            $scope.production_revenue = dataFactory.options.productionRevenue;
+            var movies_data = $rootScope.movies_db({
+                actor_names: {
+                    has: dataFactory.actorName
+                }
+            }).get();
+
+            movies_data = movies_data.map(function(movie){
+                return {
+                    production: movie.production_cost,
+                    revenue: (movie.domestic_revenue + movie.foreign_revenue),
+                    genre: movie.genre[0],
+                    title: movie.title,
+                    critique: movie.critic_rating
+                }
+            });
+            // console.log(movies_data);
+            /*if(!$scope.$$phase){
+                $scope.$apply(function(){
+                    $scope.data = movies_data;
+                });
+            }*/
+            // $timeout(function() {
+              // anything you want can go here and will safely be run on the next digest.
+              // $scope.$apply(function(){
+                $scope.data = movies_data;
+              // });
+            // });
+        };
+
+        dataFactory.promise.then(function(data) {
+            /*$scope.$watch(function() {
+                return dataFactory.actorName;
+            }, function(n, o) {
+                console.log('yup', dataFactory.actorName);
+                updateData();
+            });*/
+            // updateData();
+            $scope.$on('actor:updated', function(event,data) {
+             // you could inspect the data to see if what you care about changed, or just update your own scope
+             updateData();
+            });
+            $scope.$watch(function() {
+                return dataFactory.options.productionRevenue;
+            }, function(n, o) {
+                console.log(dataFactory.options.productionRevenue);
+                updateData();
+            });
+        }, function(error) {
+
+        });
     }])
     .controller('pieChartCtrl', ['$scope', function($scope) {
 
@@ -595,10 +647,10 @@ angular.module('myApp')
             }).order('release_date').get();
             // console.log(movies_data);
             var domestic = movies_data.map(function(movie){
-                return  [movie.title, +movie.domestic_revenue]
+                return  [movie.title, movie.domestic_revenue]
             });
              var foreign = movies_data.map(function(movie){
-                return  [movie.title, +movie.foreign_revenue]
+                return  [movie.title, movie.foreign_revenue]
             });
             // console.log(movies_d);
             // $scope.$apply(function(){

@@ -20,11 +20,11 @@ title: Flix Analysis
   	  </div>
   	  <div class="item">
   	    <div class="header">Revenue</div>
-  	    ${{data.revenue}}
+  	    ${{data.revenue}} million
   	  </div>
   	  <div class="item">
   	    <div class="header">Profit</div>
-  	    ${{data.profit}}
+  	    ${{data.profit}} million
   	  </div>
   	  <div class="item">
   	    <div class="header">Rotten Tomato Rating</div>
@@ -249,7 +249,8 @@ title: Flix Analysis
           </h4>
           <div class="ui segment attached">
             <div ng-controller="scatterChartCtrl">
-                <nvd3 options="options" data="data"></nvd3>
+                <!-- <nvd3 options="options" data="data"></nvd3> -->
+                <scatter-plot></scatter-plot>
             </div>
             <!-- <div id="viz"></div> -->
           </div>

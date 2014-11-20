@@ -85,9 +85,10 @@ angular.module('myApp').directive('pieChart', function() {
            {"genre": "Action", "value": 2}
          ]
         // update();
+        var visualization = d3plus.viz()
+          .container(d3.select($el[0]))
         function update(){
-             var visualization = d3plus.viz()
-               .container(d3.select($el[0]))
+             visualization
                .data($scope.data2)
                .type("pie")
                .id("genre")
@@ -95,6 +96,13 @@ angular.module('myApp').directive('pieChart', function() {
                .size("value")
                .height(450)
                .draw()
+            setTimeout(function(){
+                $el.find('.d3plus_arc').off('click').on('click', function(d){
+                    console.log(d.target.__data__)
+                });
+            }, 3000);
+            // console.log(visualization);
+            // viz = visualization;
         }
         $scope.$watch('data2', update);
     }
@@ -109,21 +117,19 @@ angular.module('myApp').directive('pieChart', function() {
 angular.module('myApp').directive('treeMap', function() {
 
     var link = function($scope, $el, $attrs) {
-        // console.log($el);
-        // instantiate d3plus
-        // ele = $($el.parent());
-        // console.log('yo', $('.fifteen.wide.column .row')[0].clientWidth);
-        // update();
+        var visualization = d3plus.viz()
+            .container(d3.select($el[0]))
         function update() {
-            var visualization = d3plus.viz()
-                .container(d3.select($el[0]))
-                .data($scope.data)
-                .type("tree_map")
-                .id(["genre", "name"])
-                .size("value")
-                .height(600)
-                .width($('.fifteen.wide.column .row')[0].clientWidth - 50)
-                .draw();
+            if(typeof $scope.data !== 'undefined'){
+                visualization
+                    .data($scope.data)
+                    .type("tree_map")
+                    .id(["genre", "name"])
+                    .size("value")
+                    .height(600)
+                    .width($('.fifteen.wide.column .row')[0].clientWidth - 25)
+                    .draw();
+                }
         }
 
         $(window).on("resize", function() {
@@ -142,32 +148,23 @@ angular.module('myApp').directive('treeMap', function() {
 angular.module('myApp').directive('scatterPlot', function() {
 
     var link = function($scope, $el, $attrs) {
-        // console.log($el);
-        // instantiate d3plus
-        // update();
+        var visualization = d3plus.viz()
+            .container(d3.select($el[0]))
         function update() {
-            // console.log('bubble');
-           var sample_data = [
-               {"critique": 87, "production": 250, "movie": "The Dark Knight Rises"},
-               {"critique": 85, "production": 160, "movie": "Inception"},
-               {"critique": 40, "production": 40, "movie": "The Dark Knight"},
-               {"critique": 45, "production": 10, "movie": "The Prestige"},
-               {"critique": 80, "production": 150, "movie": "Batman Begins"},
-               {"critique": 92, "production": 46, "movie": "Insomnia"},
-             ]
-            
+            if(typeof $scope.data !== 'undefined'){
              // instantiate d3plus
-             var visualization = d3plus.viz()
-               .container(d3.select($el[0]))  // container DIV to hold the visualization
-               .data($scope.data)  // data to use with the visualization
-               .type("scatter")      // visualization type
-               .id(["genre", "title"])         // key for which our data is unique on
-               .x($scope.production_revenue)         // key for x-axis
-               .y("critique")        // key for y-axis
-               .color("genre")
-               .tooltip(["title", "genre"])
-               .height(450)
-               .draw()             // finally, draw the visualization!*/
+                visualization
+                   .data($scope.data)  // data to use with the visualization
+                   .type("scatter")      // visualization type
+                   .id(["genre", "title"])         // key for which our data is unique on
+                   .x($scope.production_revenue)         // key for x-axis
+                   .y("critique")        // key for y-axis
+                   .color("genre")
+                   .tooltip(["title", "genre"])
+                   .aggs({"critique": "mean"})
+                   .height(450)
+                   .draw()             // finally, draw the visualization!*/
+               }
         }
         $scope.$watch('data', update);
     }
@@ -182,13 +179,12 @@ angular.module('myApp').directive('scatterPlot', function() {
 angular.module('myApp').directive('bubbleChart', function() {
 
     var link = function($scope, $el, $attrs) {
-        // console.log($el);
-        // instantiate d3plus
+        var visualization = d3plus.viz()
+          .container(d3.select($el[0]))
         
         function update() {
             // console.log('bubble');
-            var visualization = d3plus.viz()
-                .container(d3.select($el[0])) // container DIV to hold the visualization
+            visualization
                 .data($scope.data) // data to use with the visualization
                 .type("bubbles") // visualization type
                 .id(["genre", "name"]) // nesting keys
@@ -219,13 +215,12 @@ angular.module('myApp').directive('bubbleChart', function() {
 angular.module('myApp').directive('graphd3plus', function() {
 
     var link = function($scope, $el, $attrs) {
-        // console.log($el);
-        // instantiate d3plus
-        // update();
+        var visualization = d3plus.viz()
+            .container(d3.select($el[0]))
         function update() {
+            console.log('graph');
             if(typeof $scope.data != 'undefined'){
-                var visualization = d3plus.viz()
-                    .container(d3.select($el[0]))
+                visualization
                     .type("network")
                     .data($scope.data.nodes)
                     .edges($scope.data.links)

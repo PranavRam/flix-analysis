@@ -91,9 +91,9 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
     $scope.$watch('production_revenue', function(value) {
            dataFactory.options.productionRevenue = value;
     });
-    $timeout(function(){
-        // $('.ui.radio.checkbox').checkbox();
-    });
+    // $timeout(function(){
+    //     // $('.ui.radio.checkbox').checkbox();
+    // });
     dataFactory.promise.then(function(){
         var actorNames = _.uniq(_.flatten($rootScope.movies_db().select('actor_names')));
         var directorNames = _.uniq($rootScope.movies_db().select('director'));

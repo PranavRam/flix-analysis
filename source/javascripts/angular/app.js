@@ -1,1 +1,1 @@
-angular.module('myApp', ['nvd3', 'angular-treemap']);
+angular.module('myApp', ['nvd3']);

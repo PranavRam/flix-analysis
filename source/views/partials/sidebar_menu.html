@@ -1,0 +1,45 @@
+<div class="ui red vertical demo sidebar menu" ng-controller="movieInfoCtrl">
+	<div class="item">
+		<img class="rounded ui image" src="{{data.image_url}}">
+	</div>
+  <div class="item">
+  	<div class="ui list">
+  	  <div class="item">
+  	    <div class="header">Genre</div>
+  	    {{data.genre}}
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Revenue</div>
+  	    ${{data.revenue}} million
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Profit</div>
+  	    ${{data.profit}} million
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Rotten Tomato Rating</div>
+  	    {{data.rt_rating}}%
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">IMDB Rating</div>
+  	    {{data.imdb_rating}}
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Release Date</div>
+  	    {{data.release_date}}
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Run time</div>
+  	    {{data.runtime}} mins
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Country</div>
+  	    {{data.country}}
+  	  </div>
+  	  <div class="item">
+  	    <div class="header">Language</div>
+  	    {{data.language}}
+  	  </div>
+  	</div>
+  </div>
+</div>

@@ -1,3 +1,23 @@
+angular.module('myApp').controller('macroCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
+    $scope.onLoad = function() {
+        $('.macro.menu .item').tab({
+            // tabs are inside of this element
+            context: $('#macro-view'),
+            history : false
+        });
+    }
+}]);
+
+angular.module('myApp').controller('microCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
+    $scope.onLoad = function() {
+        $('.micro.menu .item').tab({
+            // tabs are inside of this element
+            context: $('#micro-view'),
+            history : false
+        });
+    }
+}]);
+
 angular.module('myApp').controller('movieInfoCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
     $scope.data = {
         title: "Inception",
@@ -19,11 +39,11 @@ angular.module('myApp').controller('graphCtrl', ['$scope', '$http', function($sc
     $http.get('data/films.json').
     success(function(data, status, headers, config) {
         $scope.data = data;
-        $scope.data.nodes = $scope.data.nodes.map(function(node){
+        $scope.data.nodes = $scope.data.nodes.map(function(node) {
             node.connections = 0;
             return node;
         })
-        $scope.data.links = $scope.data.links.map(function(link){
+        $scope.data.links = $scope.data.links.map(function(link) {
             $scope.data.nodes[link.source].connections++;
             $scope.data.nodes[link.target].connections++;
             return {
@@ -37,7 +57,7 @@ angular.module('myApp').controller('graphCtrl', ['$scope', '$http', function($sc
         // log error
     });
 
-    $scope.cb = function(name){
+    $scope.cb = function(name) {
         console.log(name);
         return name;
     }
@@ -51,7 +71,7 @@ angular.module('myApp').controller('treeMapCtrl', ['$rootScope', '$scope', '$htt
             }
         }).get();
 
-        movies_data = movies_data.map(function(movie){
+        movies_data = movies_data.map(function(movie) {
             return {
                 value: movie.production_cost,
                 genre: movie.genre[0],
@@ -86,73 +106,83 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
     $scope.critique_genre = dataFactory.options.genreCritique;
     $scope.production_revenue = 'production';
     $scope.$watch('critique_genre', function(value) {
-           dataFactory.options.genreCritique = value;
+        console.log('hey there');
+        dataFactory.options.genreCritique = value;
     });
     $scope.$watch('production_revenue', function(value) {
-           dataFactory.options.productionRevenue = value;
+        dataFactory.options.productionRevenue = value;
     });
-    // $timeout(function(){
-    //     // $('.ui.radio.checkbox').checkbox();
-    // });
-    dataFactory.promise.then(function(){
+    $scope.onLoad = function() {
+        $("#sticker").sticky({
+            topSpacing: 10,
+            getWidthFrom: '.fifteen.wide.column > .row'
+        });
+    }
+    dataFactory.promise.then(function() {
         var actorNames = _.uniq(_.flatten($rootScope.movies_db().select('actor_names')));
         var directorNames = _.uniq($rootScope.movies_db().select('director'));
         // console.log(actorNames);
         var actors = new Bloodhound({
-          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-          // `states` is an array of state names defined in "The Basics"
-          local: $.map(actorNames, function(actor) { return { value: actor }; })
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // `states` is an array of state names defined in "The Basics"
+            local: $.map(actorNames, function(actor) {
+                return {
+                    value: actor
+                };
+            })
         });
-         
+
         var directors = new Bloodhound({
-          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-          // `states` is an array of state names defined in "The Basics"
-          local: $.map(directorNames, function(director) { return { value: director }; })
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // `states` is an array of state names defined in "The Basics"
+            local: $.map(directorNames, function(director) {
+                return {
+                    value: director
+                };
+            })
         });
         // kicks off the loading/processing of `local` and `prefetch`
         actors.initialize();
         directors.initialize();
-         
+
         $('.typeahead').typeahead({
-          hint: true,
-          highlight: true,
-          minLength: 1
-        },
-        {
-          name: 'actors',
-          displayKey: 'value',
-          // `ttAdapter` wraps the suggestion engine in an adapter that
-          // is compatible with the typeahead jQuery plugin
-          source: actors.ttAdapter(),
-          templates: {
-              header: '<h3 class="heading">Actors</h3>'
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            name: 'actors',
+            displayKey: 'value',
+            // `ttAdapter` wraps the suggestion engine in an adapter that
+            // is compatible with the typeahead jQuery plugin
+            source: actors.ttAdapter(),
+            templates: {
+                header: '<h3 class="heading">Actors</h3>'
             }
-        },
-        {
-          name: 'directors',
-          displayKey: 'value',
-          // `ttAdapter` wraps the suggestion engine in an adapter that
-          // is compatible with the typeahead jQuery plugin
-          source: directors.ttAdapter(),
-          templates: {
-              header: '<h3 class="heading">Directors</h3>'
+        }, {
+            name: 'directors',
+            displayKey: 'value',
+            // `ttAdapter` wraps the suggestion engine in an adapter that
+            // is compatible with the typeahead jQuery plugin
+            source: directors.ttAdapter(),
+            templates: {
+                header: '<h3 class="heading">Directors</h3>'
             }
         }).bind("typeahead:selected", function(obj, datum, name) {
-            if(name === 'actors'){
+            if (name === 'actors') {
                 dataFactory.setActorName(datum.value);
                 // console.log('1', datum.value);
             }
             // console.log(obj, datum, name);
         });
-    }, function(error){});
+    }, function(error) {});
     // $('.ui.radio.checkbox').checkbox();
 }]);
 
 angular.module('myApp')
     .controller('productionRevenueCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
-        
+
         var updateData = function() {
             $scope.production_revenue = dataFactory.options.productionRevenue;
             var movies_data = $rootScope.movies_db({
@@ -161,10 +191,10 @@ angular.module('myApp')
                 }
             }).get();
 
-            movies_data = movies_data.map(function(movie){
+            movies_data = movies_data.map(function(movie) {
                 return {
-                    value: function(){
-                        if($scope.production_revenue === 'revenue')
+                    value: function() {
+                        if ($scope.production_revenue === 'revenue')
                             return (+movie.domestic_revenue) + (+movie.foreign_revenue);
                         return +movie.production_cost;
                     }(),
@@ -180,10 +210,10 @@ angular.module('myApp')
                 });
             }*/
             $timeout(function() {
-              // anything you want can go here and will safely be run on the next digest.
-              // $scope.$apply(function(){
+                // anything you want can go here and will safely be run on the next digest.
+                // $scope.$apply(function(){
                 $scope.data = movies_data;
-              // });
+                // });
             })
         };
 
@@ -195,9 +225,9 @@ angular.module('myApp')
                 updateData();
             });*/
             // updateData();
-            $scope.$on('actor:updated', function(event,data) {
-             // you could inspect the data to see if what you care about changed, or just update your own scope
-             updateData();
+            $scope.$on('actor:updated', function(event, data) {
+                // you could inspect the data to see if what you care about changed, or just update your own scope
+                updateData();
             });
             $scope.$watch(function() {
                 return dataFactory.options.productionRevenue;
@@ -283,30 +313,30 @@ angular.module('myApp')
             }).get();
             // _.sortBy(movies_data, function(o) { return o.release_date; })
             // console.log(movies_data);
-            if($scope.genre_critique == 'genre'){
+            if ($scope.genre_critique == 'genre') {
                 var movies_d = d3.nest().key(function(d) {
-                    return d.genre[0];
-                })
-                .rollup(function(d) {
-                    return d.length;
-                }).entries(movies_data);
-                movies_d = movies_d.map(function(movie){
+                        return d.genre[0];
+                    })
+                    .rollup(function(d) {
+                        return d.length;
+                    }).entries(movies_data);
+                movies_d = movies_d.map(function(movie) {
                     return {
                         genre: movie.key,
                         value: movie.values
                     }
                 });
+                console.log('pieeeeee', movies_d);
                 $scope.data2 = movies_d;
-            }
-            else{
-                var movies_d = movies_data.map(function(movie){
+            } else {
+                var movies_d = movies_data.map(function(movie) {
                     return {
                         x: movie.release_date,
                         y: movie.critic_rating,
                         title: movie.title
                     }
                 });
-                console.log(movies_d);
+                // console.log(movies_d);
                 // $scope.$apply(function(){
                 $scope.data = [{
                     key: 'Rating',
@@ -337,7 +367,7 @@ angular.module('myApp')
             dataFactory.setActorName("Sam Worthington");
         }, 3500);*/
     }])
-    .controller('scatterChartCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout)  {
+    .controller('scatterChartCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
 
         /*$scope.options = {
             chart: {
@@ -402,7 +432,7 @@ angular.module('myApp')
                 }
             }).get();
 
-            movies_data = movies_data.map(function(movie){
+            movies_data = movies_data.map(function(movie) {
                 return {
                     production: movie.production_cost,
                     revenue: (movie.domestic_revenue + movie.foreign_revenue),
@@ -418,10 +448,10 @@ angular.module('myApp')
                 });
             }*/
             // $timeout(function() {
-              // anything you want can go here and will safely be run on the next digest.
-              // $scope.$apply(function(){
-                $scope.data = movies_data;
-              // });
+            // anything you want can go here and will safely be run on the next digest.
+            // $scope.$apply(function(){
+            $scope.data = movies_data;
+            // });
             // });
         };
 
@@ -433,9 +463,9 @@ angular.module('myApp')
                 updateData();
             });*/
             // updateData();
-            $scope.$on('actor:updated', function(event,data) {
-             // you could inspect the data to see if what you care about changed, or just update your own scope
-             updateData();
+            $scope.$on('actor:updated', function(event, data) {
+                // you could inspect the data to see if what you care about changed, or just update your own scope
+                updateData();
             });
             $scope.$watch(function() {
                 return dataFactory.options.productionRevenue;
@@ -575,7 +605,7 @@ angular.module('myApp')
                 }
             }).order('release_date').get();
             console.log(movies_data);
-            movies_d = movies_data.map(function(movie){
+            movies_d = movies_data.map(function(movie) {
                 return {
                     x: new Date(movie.release_date),
                     y: movie.critic_rating,
@@ -626,16 +656,17 @@ angular.module('myApp')
                     tickFormat: function(d) {
                         // console.log(d);
                         var prefix = d3.formatPrefix(d);
-                        if(d >= 1000000000){
+                        if (d >= 1000000000) {
                             return d3.format('.2f')(prefix.scale(d)) + 'B';
                         }
                         return d3.format('.2f')(prefix.scale(d)) + prefix.symbol;
                     }
-                }/*,
-                tooltipContent: function(type, x, y, e, graph) { //return html content
-                    // console.log(e.point.movie);
-                    console.log(arguments);
-                }*/
+                }
+                /*,
+                                tooltipContent: function(type, x, y, e, graph) { //return html content
+                                    // console.log(e.point.movie);
+                                    console.log(arguments);
+                                }*/
             }
         };
 
@@ -646,18 +677,18 @@ angular.module('myApp')
                 }
             }).order('release_date').get();
             // console.log(movies_data);
-            var domestic = movies_data.map(function(movie){
-                return  [movie.title, movie.domestic_revenue]
+            var domestic = movies_data.map(function(movie) {
+                return [movie.title, movie.domestic_revenue]
             });
-             var foreign = movies_data.map(function(movie){
-                return  [movie.title, movie.foreign_revenue]
+            var foreign = movies_data.map(function(movie) {
+                return [movie.title, movie.foreign_revenue]
             });
             // console.log(movies_d);
             // $scope.$apply(function(){
             $scope.data = [{
                 "key": "Domestic",
                 "values": domestic
-            },{
+            }, {
                 "key": "International",
                 "values": foreign
             }];

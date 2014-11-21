@@ -52,21 +52,24 @@ angular.module('myApp').directive('radio', ['$rootScope', '$timeout', function($
             return $($el.parent()).checkbox({
                     onChange: function (value) {
                         // console.log(value, $scope[$attrs.ngModel]);
-                        if($scope[$attrs.ngModel] == 'genre'){
-                            $scope[$attrs.ngModel] = 'critique';
-                        }
-                        else if($scope[$attrs.ngModel] == 'critique'){
-                            $scope[$attrs.ngModel] = 'genre';
-                        }
-                        else if($scope[$attrs.ngModel] == 'production'){
-                            $scope[$attrs.ngModel] = 'revenue';
-                            // $rootScope.$broadcast('genre_critique:updated');
-                        }
-                        else if($scope[$attrs.ngModel] == 'revenue'){
-                            $scope[$attrs.ngModel] = 'production';
-                        }
+                        $scope.$apply(function(){
+
+                            if($scope[$attrs.ngModel] == 'genre'){
+                                $scope[$attrs.ngModel] = 'critique';
+                            }
+                            else if($scope[$attrs.ngModel] == 'critique'){
+                                $scope[$attrs.ngModel] = 'genre';
+                            }
+                            else if($scope[$attrs.ngModel] == 'production'){
+                                $scope[$attrs.ngModel] = 'revenue';
+                                // $rootScope.$broadcast('genre_critique:updated');
+                            }
+                            else if($scope[$attrs.ngModel] == 'revenue'){
+                                $scope[$attrs.ngModel] = 'production';
+                            }
+                        });
+                        
                         // $scope[$attrs.ngModel] = value;
-                        $scope.$apply();
                     }
                 });
         });
@@ -88,23 +91,28 @@ angular.module('myApp').directive('pieChart', function() {
         var visualization = d3plus.viz()
           .container(d3.select($el[0]))
         function update(){
-             visualization
-               .data($scope.data2)
-               .type("pie")
-               .id("genre")
-               // .x("genre")
-               .size("value")
-               .height(450)
-               .draw()
-            setTimeout(function(){
-                $el.find('.d3plus_arc').off('click').on('click', function(d){
-                    console.log(d.target.__data__)
-                });
-            }, 3000);
+            // if(typeof $scope.data !== 'undefined'){
+                 visualization
+                   .data($scope.data2)
+                   .type("pie")
+                   .id("genre")
+                   // .x("genre")
+                   .size("value")
+                   .height(450)
+                   .draw()
+                /*setTimeout(function(){
+                    $el.find('.d3plus_arc').off('click').on('click', function(d){
+                        console.log(d.target.__data__)
+                    });
+                }, 3000);*/
+            // }
             // console.log(visualization);
             // viz = visualization;
         }
         $scope.$watch('data2', update);
+        $(window).on("resize", function() {
+            update();
+        });
     }
     return {
         template: '<div></div>',
@@ -201,7 +209,6 @@ angular.module('myApp').directive('bubbleChart', function() {
                     "genre": "genre"
                 })
                 .height(450)
-                .zoom(true)
                 .draw() // finally, draw the visualization!
         }
         $scope.$watch('data', update);

@@ -11,7 +11,6 @@
 //= require d3plus/d3plus.full.min.js
 //= require angular-nvd3/dist/angular-nvd3.js
 //= require semantic-ui
-//= require jquery-address/src/jquery.address.js
 //= require angular-treemap
 //= require angular/app
 //= require angular/directives
@@ -24,30 +23,9 @@ $(function() {
     $('#sidebar-menu').on('click', function() {
         $('.ui.sidebar').sidebar('toggle');
     });
+    // $('.micro.menu .item').tab();
     $("#sticker").sticky({
-        topSpacing:10, 
+        topSpacing: 10,
         getWidthFrom: '.fifteen.wide.column > .row'
     });
-    $('.demo.menu .item').tab();
-    /* Bubble Chart*/
-
-    /*var sample_data = [
-        {"critique": 87, "production": 250, "movie": "The Dark Knight Rises"},
-        {"critique": 85, "production": 160, "movie": "Inception"},
-        {"critique": 40, "production": 40, "movie": "The Dark Knight"},
-        {"critique": 45, "production": 10, "movie": "The Prestige"},
-        {"critique": 80, "production": 150, "movie": "Batman Begins"},
-        {"critique": 92, "production": 46, "movie": "Insomnia"},
-      ]
-     
-      // instantiate d3plus
-      var visualization = d3plus.viz()
-        .container("#viz")  // container DIV to hold the visualization
-        .data(sample_data)  // data to use with the visualization
-        .type("chart")      // visualization type
-        .id("movie")         // key for which our data is unique on
-        .x("critique")         // key for x-axis
-        .y("production")        // key for y-axis
-        .height(350)
-        .draw()             // finally, draw the visualization!*/
 });

@@ -8,89 +8,48 @@ title: Flix Analysis
   </a>
 </div>
 
-<div class="ui red vertical demo sidebar menu" ng-controller="movieInfoCtrl">
-	<div class="item">
-		<img class="rounded ui image" src="{{data.image_url}}">
-	</div>
-  <div class="item">
-  	<div class="ui list">
-  	  <div class="item">
-  	    <div class="header">Genre</div>
-  	    {{data.genre}}
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Revenue</div>
-  	    ${{data.revenue}} million
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Profit</div>
-  	    ${{data.profit}} million
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Rotten Tomato Rating</div>
-  	    {{data.rt_rating}}%
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">IMDB Rating</div>
-  	    {{data.imdb_rating}}
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Release Date</div>
-  	    {{data.release_date}}
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Run time</div>
-  	    {{data.runtime}} mins
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Country</div>
-  	    {{data.country}}
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Language</div>
-  	    {{data.language}}
-  	  </div>
-  	</div>
-  </div>
-</div>
+<!-- Sidebar -->
+<div ng-include="'views/partials/sidebar_menu.html'"></div>
 
+<!-- Sidebar Toggle -->
 <div class="ui black huge launch right attached button" id="sidebar-menu">
 	<i class="icon list layout"></i>
 	<span class="text" style="display: none">Menu</span>
 </div>
 
 <div class="ui grid">
-  <div class="one wide column">
-    <!-- <div class="ui segment">
-    </div> -->
-  </div>
-  <div class="fifteen wide column">
-  	<div class="row">
-  		<div class="ui top menu" ng-controller="menuCtrl" id="sticker">
-  		  <div class="item">
-  		    <!-- <i class="home icon"></i> --> <div class="ui ribbon label">Flix Controls</div>
-  		  </div>
-  		  <!-- <a class="item">
-  		    <i class="mail icon"></i> Messages
-  		  </a> -->
-  		  <div class="item">
-  		  	<div class="ui form">
-  		  	  <div class="grouped inline fields">
+  <div class="row">
+    <div class="one wide column">
+      
+    </div>
+    <div class="fifteen wide column">
+      <!-- Flix Controls -->
+      <div class="ui top menu" ng-controller="menuCtrl" id="sticker">
+        <!-- <div ng-include="'views/partials/flix_controls.html'" onload="onLoad()"></div> -->
+        <div class="item">
+          <!-- <i class="home icon"></i> --> <div class="ui ribbon label">Flix Controls</div>
+        </div>
+        <!-- <a class="item">
+          <i class="mail icon"></i> Messages
+        </a> -->
+        <div class="item">
+          <div class="ui form">
+            <div class="grouped inline fields">
               <div class="field">
                 <div class="ui radio checkbox">
                   <input radio type="radio" name="name" ng-model="critique_genre" value="genre">
                   <label>Genre</label>
                 </div>
               </div>
-  		  	    <div class="field">
-  		  	      <div class="ui radio checkbox">
-  		  	        <input radio type="radio" name="name" ng-model="critique_genre" value="critique">
-  		  	        <label>Critique</label>
-  		  	      </div>
-  		  	    </div>
-  		  	  </div>
-  		  	</div>
-  		  </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input radio type="radio" name="name" ng-model="critique_genre" value="critique">
+                  <label>Critique</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="item">
           <div class="ui form">
             <div class="grouped inline fields">
@@ -111,164 +70,60 @@ title: Flix Analysis
             </div>
           </div>
         </div>
-  		  <div class="item">
-  		  	<div class="ui form">
-  		  	  <div class="grouped inline fields">
-  		  	    <div class="field">
-  		  	    	<!-- <div>Bubble Size</div>
-  		  	    	<br> -->
-  		  	      <div class="ui radio checkbox">
-  		  	        <input radio type="radio" name="name2" ng-model="production_revenue" value="production">
-  		  	        <label>Production Cost</label>
-  		  	      </div>
-  		  	    </div>
-  		  	    <div class="field">
-  		  	      <div class="ui radio checkbox">
-  		  	        <input radio type="radio" name="name2" ng-model="production_revenue" value="revenue">
-  		  	        <label>Revenue</label>
-  		  	      </div>
-  		  	    </div>
-  		  	  </div>
-  		  	</div>
-  		  </div>
-  		  <div class="right menu">
-  		    <div class="item">
-  		      <div class="ui icon input">
-  		        <input class="typeahead" type="text" placeholder="Search...">
-  		        <i class="search link icon"></i>
-  		      </div>
-  		    </div>
-  		  </div>
-  		</div>
-    </div>
-    <div class="row">
-      <div class="ui pointing secondary demo menu">
-        <a class="active red item" data-tab="first">Industry Network</a>
-        <a class="blue item" data-tab="second">Detail Treemap</a>
-      </div>
-      <div class="ui active tab segment" data-tab="first">
-        <div ng-controller="graphCtrl">
-          <div class="ui top attached small buttons">
-            <div class="ui positive button">Force Directed</div>
-              <div class="or"></div>
-              <div class="ui button">Hive Plot</div>
-          </div>
-          <div class="ui segment attached">
-            <graphd3plus data="data"></graphd3plus>
-          </div>
-        </div>
-      </div>
-      <div class="ui tab segment" data-tab="second">
-        <div ng-controller="treeMapCtrl">
-          <tree-map></tree-map>
-        </div>
-      </div>
-    </div>
-      <!-- <div ng-controller="treeCtl">
-            <div treemap="tree"
-              name="formatName(name)"
-              detail="onDetail(node)"
-              colorLow="rgb(178, 34, 0)"
-              colorMid="rgb(236, 212, 32)"
-              colorHigh="rgb(56, 96, 54)"></div>
-          </div> -->
-      <!-- <div ng-controller="treeMapCtrl">
-        <tree-map></tree-map>
-      </div> -->
-  	<!-- </div> -->
-  	<div class="row">
-  		<div class="ui two column grid">
-  			<div class="column" ng-controller="genreCritiqueCtrl">
-              <!-- <nvd3 options="options" data="data"></nvd3> -->
-              <div ng-if="genre_critique == 'genre'">
-                <h4 class="ui top attached header">
-                  Diversity
-                </h4>
-                <div class="ui segment attached">
-                  <pie-chart></pie-chart>
+        <div class="item">
+          <div class="ui form">
+            <div class="grouped inline fields">
+              <div class="field">
+                <!-- <div>Bubble Size</div>
+                <br> -->
+                <div class="ui radio checkbox">
+                  <input radio type="radio" name="name2" ng-model="production_revenue" value="production">
+                  <label>Production Cost</label>
                 </div>
               </div>
-              <div ng-if="genre_critique == 'critique'">
-                <h4 class="ui top attached header">
-                  Ratings Over Time
-                </h4>
-                <div class="ui segment attached">
-                  <nvd3 options="options" data="data"></nvd3>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input radio type="radio" name="name2" ng-model="production_revenue" value="revenue">
+                  <label>Revenue</label>
                 </div>
               </div>
-            <!-- <div ng-controller="lineChartCtrl">
-  					    <nvd3 options="options" data="data"></nvd3>
-  					</div> -->
-            <!-- <div id="viz"></div> -->
-            <!-- <div ng-controller="scatterChartCtrl">
-                <nvd3 options="options" data="data"></nvd3>
-            </div> -->
-  				</div>
-  			<!-- </div> -->
-  			<div class="column">
-          <h4 class="ui top attached header">
-            Production/Revenue Cost According To Genre
-          </h4>
-  				<div class="ui segment attached">
-            <div ng-controller="productionRevenueCtrl">
-              <bubble-chart><bubble-chart>
-            </div>
-  					<!-- <div ng-controller="scatterChartCtrl">
-  					    <nvd3 options="options" data="data"></nvd3>
-  					</div> -->
-  				</div>
-  			</div>
-  			<!-- <div class="column">
-  				<div class="ui segment">
-  					<div ng-controller="pieChartCtrl">
-  					    <nvd3 options="options" data="data"></nvd3>
-  					</div>
-  				</div>
-  			</div> -->
-  		</div>
-  	</div>
-    <div class="row">
-      <div class="ui one column grid">
-        <!-- <div class="column">
-          <div class="ui segment">
-            <div ng-controller="discreteBarChartCtrl">
-                <nvd3 options="options" data="data"></nvd3>
-            </div>
-            <div ng-controller="lineChartCtrl">
-                <nvd3 options="options" data="data"></nvd3>
-            </div>
-            <div id="viz"></div>
-            <div ng-controller="scatterChartCtrl">
-                <nvd3 options="options" data="data"></nvd3>
             </div>
           </div>
-        </div> -->
-        <div class="column">
-          <h4 class="ui top attached header">
-            Ratings vs Production Cost/Revenue
-          </h4>
-          <div class="ui segment attached">
-            <div ng-controller="scatterChartCtrl">
-                <!-- <nvd3 options="options" data="data"></nvd3> -->
-                <scatter-plot></scatter-plot>
+        </div>
+        <div class="right menu">
+          <div class="item">
+            <div class="ui icon input">
+              <input class="typeahead" type="text" placeholder="Search...">
+              <i class="search link icon"></i>
             </div>
-            <!-- <div id="viz"></div> -->
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="ui one column grid">
-        <div class="column">
-          <h4 class="ui top attached header">
-            Domestic vs International Revenue
-          </h4>
-          <div class="ui segment attached">
-            <div ng-controller="multiBarChartCtrl">
-                <nvd3 options="options" data="data"></nvd3>
-            </div>
-          </div>
-        </div>
+  </div>
+  <div class="row">
+    <div class="one wide column">
+      <div class="ui icon header">
+        <i class="circular zoom out icon"></i>Macro View
+        <div class="sub header">Overview</div>
+      </div>
+    </div>
+    <div class="fifteen wide column">
+      <!-- Macro View -->
+      <div class="row" id="macro-view" ng-controller="macroCtrl" ng-include="'views/partials/macro_view.html'" onload="onLoad()">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="one wide column">
+      <div class="ui icon header">
+        <i class="circular zoom in icon"></i>Micro View
+        <div class="sub header">Detail View</div>
+      </div>
+    </div>
+    <div class="fifteen wide column">
+      <!-- Micro View -->
+      <div class="row" id="micro-view" ng-controller="microCtrl" ng-include="'views/partials/micro_view.html'" onload="onLoad()">
       </div>
     </div>
   </div>

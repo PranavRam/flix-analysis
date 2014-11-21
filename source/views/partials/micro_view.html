@@ -1,0 +1,106 @@
+<div class="ui pointing secondary micro menu">
+  <a class="active red item" data-tab="general">General Charts</a>
+  <a class="blue item" data-tab="treemap">Detail Treemap</a>
+</div>
+<div class="ui active tab segment" data-tab="general">
+  <div class="row">
+    <div class="ui two column grid">
+      <div class="column" ng-controller="genreCritiqueCtrl">
+            <!-- <nvd3 options="options" data="data"></nvd3> -->
+            <div ng-if="genre_critique == 'genre'">
+              <h4 class="ui top attached header">
+                Diversity
+              </h4>
+              <div class="ui segment attached">
+                <pie-chart></pie-chart>
+              </div>
+            </div>
+            <div ng-if="genre_critique == 'critique'">
+              <h4 class="ui top attached header">
+                Ratings Over Time
+              </h4>
+              <div class="ui segment attached">
+                <nvd3 options="options" data="data"></nvd3>
+              </div>
+            </div>
+          <!-- <div ng-controller="lineChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div> -->
+          <!-- <div id="viz"></div> -->
+          <!-- <div ng-controller="scatterChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div> -->
+        </div>
+      <!-- </div> -->
+      <div class="column">
+        <h4 class="ui top attached header">
+          Production/Revenue Cost According To Genre
+        </h4>
+        <div class="ui segment attached">
+          <div ng-controller="productionRevenueCtrl">
+            <bubble-chart><bubble-chart>
+          </div>
+          <!-- <div ng-controller="scatterChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div> -->
+        </div>
+      </div>
+      <!-- <div class="column">
+        <div class="ui segment">
+          <div ng-controller="pieChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="ui one column grid">
+      <!-- <div class="column">
+        <div class="ui segment">
+          <div ng-controller="discreteBarChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div>
+          <div ng-controller="lineChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div>
+          <div id="viz"></div>
+          <div ng-controller="scatterChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div>
+        </div>
+      </div> -->
+      <div class="column">
+        <h4 class="ui top attached header">
+          Ratings vs Production Cost/Revenue
+        </h4>
+        <div class="ui segment attached">
+          <div ng-controller="scatterChartCtrl">
+              <!-- <nvd3 options="options" data="data"></nvd3> -->
+              <scatter-plot></scatter-plot>
+          </div>
+          <!-- <div id="viz"></div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="ui one column grid">
+      <div class="column">
+        <h4 class="ui top attached header">
+          Domestic vs International Revenue
+        </h4>
+        <div class="ui segment attached">
+          <div ng-controller="multiBarChartCtrl">
+              <nvd3 options="options" data="data"></nvd3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>
+<div class="ui tab segment" data-tab="treemap">
+  <div ng-controller="treeMapCtrl">
+    <tree-map></tree-map>
+  </div>
+</div>

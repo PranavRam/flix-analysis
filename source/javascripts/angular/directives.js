@@ -236,10 +236,10 @@ angular.module('myApp').directive('graphd3plus', function() {
                     // .text({"id":"name"})
                     .legend(false)
                     .height(600)
-                    .focus({
+                    /*.focus({
                         tooltip: true,
                         value: "Steven Spielberg"
-                    }, $scope.cb)
+                    }, $scope.cb)*/
                     .draw();
                 }
         }

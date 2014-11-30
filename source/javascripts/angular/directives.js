@@ -91,7 +91,7 @@ angular.module('myApp').directive('pieChart', function() {
         var visualization = d3plus.viz()
           .container(d3.select($el[0]))
         function update(){
-            // if(typeof $scope.data !== 'undefined'){
+            if(typeof $scope.data2 !== 'undefined'){
                  visualization
                    .data($scope.data2)
                    .type("pie")
@@ -105,7 +105,7 @@ angular.module('myApp').directive('pieChart', function() {
                         console.log(d.target.__data__)
                     });
                 }, 3000);*/
-            // }
+            }
             // console.log(visualization);
             // viz = visualization;
         }
@@ -174,9 +174,6 @@ angular.module('myApp').directive('scatterPlot', function() {
                }
         }
         $scope.$watch('data', update);
-        $(window).on("resize", function() {
-            update();
-        });
     }
     return {
         template: '<div></div>',
@@ -233,7 +230,7 @@ angular.module('myApp').directive('graphd3plus', function() {
                     .type("network")
                     .data($scope.data.nodes)
                     .edges($scope.data.links)
-                    .size("connections")
+                    // .size("connections")
                     .color("type")
                     .id("name")
                     // .text({"id":"name"})

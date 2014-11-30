@@ -39,19 +39,19 @@ angular.module('myApp').controller('graphCtrl', ['$scope', '$http', function($sc
     $http.get('data/films.json').
     success(function(data, status, headers, config) {
         $scope.data = data;
-        $scope.data.nodes = $scope.data.nodes.map(function(node) {
+        /*$scope.data.nodes = $scope.data.nodes.map(function(node) {
             node.connections = 0;
             return node;
-        })
+        })*/
         $scope.data.links = $scope.data.links.map(function(link) {
-            $scope.data.nodes[link.source].connections++;
-            $scope.data.nodes[link.target].connections++;
+            // $scope.data.nodes[link.source].connections++;
+            // $scope.data.nodes[link.target].connections++;
             return {
                 source: $scope.data.nodes[link.source],
                 target: $scope.data.nodes[link.target]
             }
         });
-        // console.log($scope.data.nodes);
+        // console.log($scope.data.links);
     }).
     error(function(data, status, headers, config) {
         // log error

@@ -161,6 +161,7 @@ angular.module('myApp').directive('scatterPlot', function() {
         function update() {
             if(typeof $scope.data !== 'undefined'){
              // instantiate d3plus
+             // console.log('updating sctt', $scope.data);
                 visualization
                    .data($scope.data)  // data to use with the visualization
                    .type("scatter")      // visualization type
@@ -205,7 +206,8 @@ angular.module('myApp').directive('bubbleChart', function() {
                     "id": "name",
                     "genre": "genre"
                 })
-                .height(450)
+                .height(800)
+                .width($('.fifteen.wide.column .row')[0].clientWidth - 25)
                 .draw() // finally, draw the visualization!
             }
         }

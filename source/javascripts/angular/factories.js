@@ -7,14 +7,27 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
       },
       actorName: ["Steven Spielberg"],
       directorName: "Steven Spielberg",
-      setActorName: function(name){
-        this.actorName = name;
-        $rootScope.$broadcast('actor:updated',data);
+      updateCelebrityList: function(name){
+        if(this.results.indexOf(name) === -1){
+          this.actorName.push(name);
+          this.updateResults();
+          // console.log(this.actorName);
+          $rootScope.$broadcast('actor:updated',this.results);
+        }
       },
       setGenreCritique: function(name){
         this.options.genreCritique = name;
         $rootScope.$broadcast('genre_critique:updated',data);
       },
+      updateResults: function(){
+        this.results = $rootScope.movies_db([{
+              actor_names: {
+                  has: factory.actorName
+              }
+          }, {
+              director: factory.actorName
+          }]).get();
+      }
     };
 
     var promise = $http.get('data/movies.json').
@@ -44,6 +57,5 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
           // log error
         });
     factory.promise = promise;
-
     return factory;
 }]);

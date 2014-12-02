@@ -1,28 +1,29 @@
 <div class="ui pointing secondary micro menu">
   <a class="active red item" data-tab="general">General Charts</a>
   <a class="blue item" data-tab="treemap">Detail Treemap</a>
+  <a class="blue item" data-tab="bubbleChart">Bubble Chart</a>
 </div>
 <div class="ui active tab segment" data-tab="general">
   <div class="row">
     <div class="ui two column grid">
-      <div class="column" ng-controller="genreCritiqueCtrl">
+      <div class="column" ng-controller="diversityCtrl">
             <!-- <nvd3 options="options" data="data"></nvd3> -->
-            <div ng-if="genre_critique == 'genre'">
+            <!-- <div ng-if="genre_critique == 'genre'"> -->
               <h4 class="ui top attached header">
                 Diversity
               </h4>
               <div class="ui segment attached">
                 <pie-chart></pie-chart>
               </div>
-            </div>
-            <div ng-if="genre_critique == 'critique'">
+            <!-- </div> -->
+            <!-- <div ng-if="genre_critique == 'critique'">
               <h4 class="ui top attached header">
                 Ratings Over Time
               </h4>
               <div class="ui segment attached">
                 <nvd3 options="options" data="data"></nvd3>
               </div>
-            </div>
+            </div> -->
           <!-- <div ng-controller="lineChartCtrl">
               <nvd3 options="options" data="data"></nvd3>
           </div> -->
@@ -32,18 +33,21 @@
           </div> -->
         </div>
       <!-- </div> -->
-      <div class="column">
+      <div class="column" ng-controller="ratingsTimeCtrl">
         <h4 class="ui top attached header">
+          Ratings Over Time
+        </h4>
+        <div class="ui segment attached">
+          <nvd3 options="options" data="data"></nvd3>
+        </div>
+        <!-- <h4 class="ui top attached header">
           Production/Revenue Cost According To Genre
         </h4>
         <div class="ui segment attached">
           <div ng-controller="productionRevenueCtrl">
             <bubble-chart><bubble-chart>
           </div>
-          <!-- <div ng-controller="scatterChartCtrl">
-              <nvd3 options="options" data="data"></nvd3>
-          </div> -->
-        </div>
+        </div> -->
       </div>
       <!-- <div class="column">
         <div class="ui segment">
@@ -102,5 +106,10 @@
 <div class="ui tab segment" data-tab="treemap">
   <div ng-controller="treeMapCtrl">
     <tree-map></tree-map>
+  </div>
+</div>
+<div class="ui tab segment" data-tab="bubbleChart">
+  <div ng-controller="productionRevenueCtrl">
+    <bubble-chart><bubble-chart>
   </div>
 </div>

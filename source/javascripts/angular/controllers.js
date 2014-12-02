@@ -185,36 +185,27 @@ angular.module('myApp')
 
         var updateData = function() {
             $scope.production_revenue = dataFactory.options.productionRevenue;
-            var movies_data = $rootScope.movies_db({
+            /*var movies_data = $rootScope.movies_db([{
                 actor_names: {
                     has: dataFactory.actorName
                 }
-            }).get();
-
-            movies_data = movies_data.map(function(movie) {
+            }, {
+                director: dataFactory.actorName
+            }]).get();*/
+            console.log("HERE!",dataFactory.results);
+            movies_data = dataFactory.results.map(function(movie) {
                 return {
                     value: function() {
                         if ($scope.production_revenue === 'revenue')
-                            return (+movie.domestic_revenue) + (+movie.foreign_revenue);
-                        return +movie.production_cost;
+                            return (movie.domestic_revenue) + (movie.foreign_revenue);
+                        return movie.production_cost;
                     }(),
                     genre: movie.genre[0],
                     name: movie.title,
                     group: 'Production Cost'
                 }
             });
-            console.log(movies_data);
-            /*if(!$scope.$$phase){
-                $scope.$apply(function(){
-                    $scope.data = movies_data;
-                });
-            }*/
-            $timeout(function() {
-                // anything you want can go here and will safely be run on the next digest.
-                // $scope.$apply(function(){
-                $scope.data = movies_data;
-                // });
-            })
+            $scope.data = movies_data;
         };
 
         dataFactory.promise.then(function(data) {
@@ -225,6 +216,7 @@ angular.module('myApp')
                 updateData();
             });*/
             // updateData();
+            // alert(dataFactory.results);
             $scope.$on('actor:updated', function(event, data) {
                 // you could inspect the data to see if what you care about changed, or just update your own scope
                 updateData();
@@ -306,11 +298,12 @@ angular.module('myApp')
 
         var updateData = function() {
             $scope.genre_critique = dataFactory.options.genreCritique;
-            var movies_data = $rootScope.movies_db({
+            /*var movies_data = $rootScope.movies_db({
                 actor_names: {
                     has: dataFactory.actorName
                 }
-            }).get();
+            }).get();*/
+            var movies_data = dataFactory.results
             // _.sortBy(movies_data, function(o) { return o.release_date; })
             // console.log(movies_data);
             if ($scope.genre_critique == 'genre') {
@@ -426,13 +419,13 @@ angular.module('myApp')
         }*/
         var updateData = function() {
             $scope.production_revenue = dataFactory.options.productionRevenue;
-            var movies_data = $rootScope.movies_db({
+            /*var movies_data = $rootScope.movies_db({
                 actor_names: {
                     has: dataFactory.actorName
                 }
-            }).get();
+            }).get();*/
 
-            movies_data = movies_data.map(function(movie) {
+            movies_data = dataFactory.results.map(function(movie) {
                 return {
                     production: movie.production_cost,
                     revenue: (movie.domestic_revenue + movie.foreign_revenue),
@@ -599,13 +592,13 @@ angular.module('myApp')
         };
 
         var updateData = function() {
-            var movies_data = $rootScope.movies_db({
+            /*var movies_data = $rootScope.movies_db({
                 actor_names: {
                     has: dataFactory.actorName
                 }
-            }).order('release_date').get();
+            }).order('release_date').get();*/
             console.log(movies_data);
-            movies_d = movies_data.map(function(movie) {
+            movies_d = dataFactory.results.map(function(movie) {
                 return {
                     x: new Date(movie.release_date),
                     y: movie.critic_rating,
@@ -671,11 +664,12 @@ angular.module('myApp')
         };
 
         var updateData = function() {
-            var movies_data = $rootScope.movies_db({
+            /*var movies_data = $rootScope.movies_db({
                 actor_names: {
                     has: dataFactory.actorName
                 }
-            }).order('release_date').get();
+            }).order('release_date').get();*/
+            movies_data = dataFactory.results;
             // console.log(movies_data);
             var domestic = movies_data.map(function(movie) {
                 return [movie.title, movie.domestic_revenue]

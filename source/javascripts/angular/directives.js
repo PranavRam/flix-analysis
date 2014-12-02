@@ -190,7 +190,7 @@ angular.module('myApp').directive('bubbleChart', function() {
           .container(d3.select($el[0]))
         
         function update() {
-            // console.log('bubble');
+           if(typeof $scope.data != 'undefined'){
             visualization
                 .data($scope.data) // data to use with the visualization
                 .type("bubbles") // visualization type
@@ -207,6 +207,7 @@ angular.module('myApp').directive('bubbleChart', function() {
                 })
                 .height(450)
                 .draw() // finally, draw the visualization!
+            }
         }
         $scope.$watch('data', update);
     }

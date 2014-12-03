@@ -1,45 +1,59 @@
 <div class="ui red vertical demo sidebar menu" ng-controller="movieInfoCtrl">
 	<div class="item">
-		<img class="rounded ui image" src="{{data.image_url}}">
+    <h4>{{data.title}}</h4>
+  </div>
+  <div class="item">
+		<img class="rounded ui image" src="{{data.poster}}">
 	</div>
   <div class="item">
   	<div class="ui list">
+      <div class="item">
+        <div class="header">Director</div>
+        {{data.director}}
+      </div>
   	  <div class="item">
   	    <div class="header">Genre</div>
-  	    {{data.genre}}
+  	    {{data.genre[0]}}
+  	  </div>
+      <div class="item">
+        <div class="header">Production</div>
+        {{data.production_cost | currency:"USD$ ":0}}
+      </div>
+      <div class="item">
+        <div class="header">Domestic Revenue</div>
+        {{data.domestic_revenue | currency:"USD$ ":0}}
+      </div>
+  	  <div class="item">
+  	    <div class="header">Foreign Revenue</div>
+  	    {{data.foreign_revenue | currency:"USD$ ":0}}
   	  </div>
   	  <div class="item">
-  	    <div class="header">Revenue</div>
-  	    ${{data.revenue}} million
+  	    <div class="header">Metacritic Rating</div>
+  	    {{data.critic_rating}}%
   	  </div>
   	  <div class="item">
-  	    <div class="header">Profit</div>
-  	    ${{data.profit}} million
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Rotten Tomato Rating</div>
-  	    {{data.rt_rating}}%
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">IMDB Rating</div>
-  	    {{data.imdb_rating}}
+  	    <div class="header">Public Rating</div>
+  	    {{data.public_rating}}
   	  </div>
   	  <div class="item">
   	    <div class="header">Release Date</div>
-  	    {{data.release_date}}
+  	    {{data.release_date | date:'MM/dd/yyyy'}}
   	  </div>
   	  <div class="item">
   	    <div class="header">Run time</div>
   	    {{data.runtime}} mins
   	  </div>
   	  <div class="item">
-  	    <div class="header">Country</div>
-  	    {{data.country}}
-  	  </div>
-  	  <div class="item">
-  	    <div class="header">Language</div>
-  	    {{data.language}}
+  	    <div class="header">Description</div>
+  	    {{data.description}}
   	  </div>
   	</div>
+  </div>
+  <div class="item">
+    <div class="ui list">
+      <div class="item" ng-repeat="movie in movies" ng-click="selectMovie(movie)">
+        {{movie.title}}
+      </div>
+    </div>
   </div>
 </div>

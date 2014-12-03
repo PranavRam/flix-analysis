@@ -9,32 +9,41 @@ angular.module('myApp').controller('macroCtrl', ['$rootScope', '$scope', '$http'
 }]);
 
 angular.module('myApp').controller('microCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
+    // $rootScope.currentTab = 'general';
     $scope.onLoad = function() {
         $('.micro.menu .item').tab({
             // tabs are inside of this element
             context: $('#micro-view'),
             history: false,
             onTabLoad: function(tabPath, parameterArray, historyEvent) {
-                $scope.currentTab = tabPath;
-                // console.log($scope.currentTab);
+                $rootScope.$broadcast('microtab:change',tabPath);
+                // console.log($rootScope.currentTab);
             }
         });
     }
 }]);
 
 angular.module('myApp').controller('movieInfoCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
-    $scope.data = {
-        title: "Inception",
-        genre: 'Action, Drama',
-        revenue: 500,
-        profit: 300,
-        rt_rating: 93,
-        imdb_rating: 9.4,
-        release_date: 'May 7th, 2011',
-        runtime: 132,
-        country: 'U.S.A',
-        language: 'English',
-        image_url: 'http://intra.burltwpsch.org/Copy%20of%20users/dyeager/Web%20Design/Web%20Page%20Creation%20Class/2010-2011/S2/WPC12/thumbnail%20table/Inception-movie-poster.jpg'
+    $scope.data = [];
+
+    $scope.movies = [];
+    dataFactory.promise.then(function(data) {
+        $scope.movies = dataFactory.results;
+        $scope.data = $scope.movies[0];
+        $scope.$watch(function() {
+            return dataFactory.results;
+        }, function(n, o) {
+            // console.log(dataFactory.actorName);
+            // updateData();
+            $scope.movies = dataFactory.results;
+        })
+    }, function(error) {
+
+    });
+
+    $scope.selectMovie = function(movie){
+        $scope.data = movie;
+        // console.log(movie);
     }
 }]);
 
@@ -129,9 +138,9 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
         dataFactory.updateCelebrityList(names);
     }
     dataFactory.promise.then(function() {
-        var actorNames = _.uniq(_.flatten($rootScope.movies_db().limit(100).select('actor_names')));
+        var actorNames = _.uniq(_.flatten($rootScope.movies_db().limit(200).select('actor_names')));
         var genreNames = _.uniq(_.flatten($rootScope.movies_db().select('genre')));
-        var directorNames = _.uniq($rootScope.movies_db().limit(100).select('director'));
+        var directorNames = _.uniq($rootScope.movies_db().limit(200).select('director'));
 
         $scope.genres = genreNames.map(function(genre){
             return {
@@ -575,7 +584,7 @@ angular.module('myApp')
 
             // d3.csv('data/cars.csv', function(data) {
             // $scope.data = data;
-            var movies_data = $rootScope.movies_db().limit(79).map(function(record, recordNum) {
+            /*var movies_data = $rootScope.movies_db().limit(79).map(function(record, recordNum) {
                     return {
                         // release_date: record.release_date,
                         production_cost: record.production_cost,
@@ -588,28 +597,43 @@ angular.module('myApp')
                         genre: record.genre[0],
                         title: record.title
                     }
-                })
+                });*/
+            var movies_data = dataFactory.results.map(function(record, recordNum) {
+                    return {
+                        // release_date: record.release_date,
+                        production_cost: record.production_cost,
+                        domestic_revenue: record.domestic_revenue,
+                        public_rating: record.public_rating,
+                        critic_rating: record.critic_rating,
+                        director: record.director,
+                        runtime: record.runtime,
+                        actor: record.actor_names[0],
+                        genre: record.genre[0],
+                        title: record.title
+                    }
+                });
                 // "title", "production_cost", "domestic_cost", "foreign_revenue", "public_rating", "critic_rating", "runtime", "director");
                 // console.log('MOVIES', movies_data);
                 // var dimensions = ['director', 'title', 'runtime'];
             $scope.data = movies_data;
-            var blue_to_brown = d3.scale.linear()
-                .domain([0, 200000000])
+            var zcolorscale = d3.scale.linear()
+                .domain([-2,-0.5,0.5,2])
                 .range(["red", "green"])
                 .interpolate(d3.interpolateLab);
 
-            var color = function(d) {
-                return blue_to_brown(d['domestic_revenue']);
-            };
+            /*var color = function(d) {
+                return zcolorscale(d['critic_rating']);
+            };*/
 
             // console.log($el[0]);
-            var parcoords = d3.parcoords()('#parcoords');
+            $('#parcoords').html('');
+            parcoords = d3.parcoords()('#parcoords');
             // function update() {
             if (typeof $scope.data != 'undefined') {
                 // console.log($el);
                 parcoords
                 // .dimensions(dimensions)
-                    .color(color)
+                    // .color(color)
                     .alpha(0.4)
                     .data($scope.data)
                     /*.height(600)
@@ -622,6 +646,43 @@ angular.module('myApp')
                     })
                     .brushMode("1D-axes"); // enable brushing
             }
+            change_color("domestic_revenue");
+            parcoords.svg.selectAll(".dimension")
+                .on("click", change_color)
+                .selectAll(".label")
+                .style("font-size", "14px");
+
+            function change_color(dimension) {
+                // console.log(dimension);
+              parcoords.svg.selectAll(".dimension .label")
+                .style("font-weight", "normal")
+                .filter(function(d) { return d == dimension; })
+                .style("font-weight", "bold");
+                // console.log(zcolor(parcoords.data(),dimension));
+              if(dimension == "title" || dimension == "actor" || dimension == "director" || dimension == "genre"){
+                parcoords.color(function(d) { return d3plus.color.random(d[dimension]); }).render();
+                return;
+              }
+              parcoords.color(zcolor(parcoords.data(),dimension)).render()
+            }
+
+            // return color function based on plot and dimension
+            function zcolor(col, dimension) {
+              var z = zscore(_(col).pluck(dimension).map(parseFloat));
+              // console.log(z);
+              return function(d) { return zcolorscale(z(d[dimension])) }
+            };
+
+            // color by zscore
+            function zscore(col) {
+                // console.log(col);
+              var n = col.length,
+                  mean = _(col).mean(),
+                  sigma = _(col).stdDeviation();
+              return function(d) {
+                return (d-mean)/sigma;
+              };
+            };
             // }
         };
 

@@ -142,7 +142,9 @@ angular.module('myApp').directive('scatterPlot', function() {
                 visualization
                     .data($scope.data) // data to use with the visualization
                     .type("scatter") // visualization type
-                    .id(["genre", "title"]) // key for which our data is unique on
+                    .id(["genre","title"]) // key for which our data is unique on
+                    .depth(1)
+                    .id({"solo": "Munich"})
                     .x($scope.production_revenue) // key for x-axis
                     .y("Critic Rating") // key for y-axis
                     .color("genre")
@@ -153,7 +155,6 @@ angular.module('myApp').directive('scatterPlot', function() {
                     })
                     .height(450)
                     .ui([
-
                         {
                             "method": "y",
                             "label": "Rating",
@@ -169,12 +170,25 @@ angular.module('myApp').directive('scatterPlot', function() {
                             }, {
                                 "Revenue": "revenue"
                             }]
+                        },{
+                            "method" : function(value){
+                              visualization.id(["genre", "title"]).id({ "solo" : [] }).depth(0).draw();
+                            },
+                            "label": "Reset",
+                            "type": "button",
+                            "value"  : [""]
                         }
                     ])
+                    // .focus({value: {title: "Minority Report"}})
                     .draw() // finally, draw the visualization!*/
             }
         }
         $scope.$watch('data', update);
+        /*setTimeout(function(){
+            console.log('draw it!');
+            visualization.focus({value: "Minority Report"}).draw();
+        }
+            , 10000);*/
     }
     return {
         template: '<div></div>',
@@ -212,6 +226,9 @@ angular.module('myApp').directive('bubbleChart', function() {
             }
         }
         $scope.$watch('data', update);
+        $scope.$on('microtab:change', function(e){
+            update();
+        });
     }
     return {
         template: '<div></div>',

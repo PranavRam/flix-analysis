@@ -2,6 +2,7 @@
 //= require jquery
 //= require moment/min/moment-with-locales.js
 //= require underscore
+//= require underscore_math.js
 //= require jquery-sticky/jquery.sticky.js
 //= require typeahead.js/dist/bloodhound.js
 //= require typeahead.js/dist/typeahead.jquery.js

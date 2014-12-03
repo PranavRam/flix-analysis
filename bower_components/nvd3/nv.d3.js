@@ -11187,6 +11187,8 @@ nv.models.scatter = function() {
           pointPaths.exit().remove();
           pointPaths
               .attr('d', function(d) {
+                if(typeof d === 'undefined')
+                  return 'M 0 0';
                 if (d.data.length === 0)
                     return 'M 0 0'
                 else

@@ -34603,19 +34603,21 @@ module.exports = function( vars ) {
     var font = copy(vars.ui.font);
     font.secondary = vars.ui.font;
 
-    d.form
-      .data(data)
-      .font(font)
-      .format(vars.format.locale.language)
-      .title(vars.format.value(title))
-      .type(d.type || "auto")
-      .ui({
-        "align": vars.ui.align.value,
-        "padding": vars.ui.padding,
-        "margin": 0
-      })
-      .width(d.width || false)
-      .draw();
+    if(typeof d.form !== 'undefined'){
+      d.form
+        .data(data)
+        .font(font)
+        .format(vars.format.locale.language)
+        .title(vars.format.value(title))
+        .type(d.type || "auto")
+        .ui({
+          "align": vars.ui.align.value,
+          "padding": vars.ui.padding,
+          "margin": 0
+        })
+        .width(d.width || false)
+        .draw();
+      }
 
   });
 

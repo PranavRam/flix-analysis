@@ -6,10 +6,11 @@
 //= require typeahead.js/dist/bloodhound.js
 //= require typeahead.js/dist/typeahead.jquery.js
 //= require angular/angular.js
+//= require angular-rangeslider/angular.rangeSlider.js
 //= require isteven-angular-multiselect/angular-multi-select.js
 //= require d3/d3.js
 //= require nvd3/nv.d3.js
-//= require d3plus/d3plus.full.min.js
+//= require d3plus/d3plus.full.js
 //= require angular-nvd3/dist/angular-nvd3.js
 //= require semantic-ui
 //= require angular-treemap

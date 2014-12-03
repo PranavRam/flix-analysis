@@ -103,6 +103,10 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
     $scope.actor_director = 'actor';
     $scope.critique_genre = dataFactory.options.genreCritique;
     $scope.production_revenue = 'production';
+
+    $scope.min = 0;
+    $scope.max = 100;
+
     $scope.$watch('critique_genre', function(value) {
         // console.log('hey there');
         dataFactory.options.genreCritique = value;
@@ -126,8 +130,15 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
     }
     dataFactory.promise.then(function() {
         var actorNames = _.uniq(_.flatten($rootScope.movies_db().limit(100).select('actor_names')));
+        var genreNames = _.uniq(_.flatten($rootScope.movies_db().select('genre')));
         var directorNames = _.uniq($rootScope.movies_db().limit(100).select('director'));
 
+        $scope.genres = genreNames.map(function(genre){
+            return {
+                name: genre,
+                ticked: true
+            }
+        });
         var celebrities = [];
         celebrities.push({
             name: '<strong>Actors</strong>',
@@ -258,7 +269,43 @@ angular.module('myApp')
     .controller('diversityCtrl', ['dataFactory', '$rootScope', '$scope', '$http', '$timeout', function(dataFactory, $rootScope, $scope, $http, $timeout) {
         var updateData = function() {
             var movies_data = dataFactory.results
-            var movies_d = d3.nest().key(function(d) {
+                /**/
+            var movies_data = dataFactory.results
+            var celebrities = dataFactory.actorName;
+            var result = [];
+            angular.forEach(celebrities, function(celeb) {
+                var data = $rootScope.movies_db([{
+                    actor_names: {
+                        has: celeb
+                    }
+                }, {
+                    director: celeb
+                }]).get();
+                result.push(data);
+            });
+            var movies_d = [];
+            angular.forEach(result, function(celebMovieList, i) {
+                var data = d3.nest().key(function(d) {
+                        return d.genre[0];
+                    })
+                    .rollup(function(d) {
+                        return d.length;
+                    }).entries(celebMovieList);
+                data.name = celebrities[i];
+                data = data.map(function(dat) {
+                    return {
+                        name: celebrities[i],
+                        genre: dat.key,
+                        value: dat.values
+                    };
+
+                });
+                movies_d.push(data);
+            });
+            /**/
+            movies_d = _.flatten(movies_d);
+            // console.log(movies_d);
+            /*var movies_d = d3.nest().key(function(d) {
                     return d.genre[0];
                 })
                 .rollup(function(d) {
@@ -269,7 +316,7 @@ angular.module('myApp')
                     genre: movie.key,
                     value: movie.values
                 }
-            });
+            });*/
             // console.log('pieeeeee', movies_d);
             $scope.data2 = movies_d;
         };
@@ -290,7 +337,7 @@ angular.module('myApp')
         var format = d3.time.format("%m/%d/%Y");
         $scope.options = {
             chart: {
-                type: 'lineChart',
+                type: 'lineWithFocusChart',
                 height: 450,
                 margin: {
                     top: 20,
@@ -327,12 +374,24 @@ angular.module('myApp')
                         // return d3.format('.0f')(d.x);
                     },
                 },
+                x2Axis: {
+                    axisLabel: 'Release Date',
+                    tickFormat: function(d) {
+                        return format(new Date(d)); // returns a string
+                        // return d3.format('.0f')(d.x);
+                    },
+                },
                 yAxis: {
                     axisLabel: 'Rating',
                     tickFormat: function(d) {
                         return d3.format('.0f')(d);
-                    },
-                    axisLabelDistance: 30
+                    }
+                },
+                yAxis: {
+                    axisLabel: 'Rating',
+                    tickFormat: function(d) {
+                        return d3.format('.0f')(d);
+                    }
                 },
                 callback: function(chart) {
                     console.log("!!! lineChart callback !!!");
@@ -347,22 +406,47 @@ angular.module('myApp')
 
         var updateData = function() {
             var movies_data = dataFactory.results
-                // _.sortBy(movies_data, function(o) { return o.release_date; })
-                // console.log(movies_data);
-            var movies_d = movies_data.map(function(movie) {
+            var celebrities = dataFactory.actorName;
+            var result = [];
+            angular.forEach(celebrities, function(celeb) {
+                var data = $rootScope.movies_db([{
+                    actor_names: {
+                        has: celeb
+                    }
+                }, {
+                    director: celeb
+                }]).get();
+                result.push(data);
+            });
+            var movies_d = [];
+            angular.forEach(result, function(celebMovieList, i) {
+                var data = celebMovieList.map(function(movie) {
+                    return {
+                        x: movie.release_date,
+                        y: movie.critic_rating,
+                        title: movie.title
+                    }
+                });
+                movies_d.push({
+                    key: celebrities[i],
+                    color: d3plus.color.random(i),
+                    values: data
+                });
+            });
+            // console.log(movies_d);
+            /*var movies_d = movies_data.map(function(movie) {
                 return {
                     x: movie.release_date,
                     y: movie.critic_rating,
                     title: movie.title
                 }
-            });
+            });*/
             // console.log(movies_d);
             // $scope.$apply(function(){
-            $scope.data = [{
-                key: 'Rating',
-                color: '#ff7f0e',
-                values: movies_d
-            }];
+            $timeout(function() {
+                $scope.data = movies_d;
+            });
+
         };
 
         dataFactory.promise.then(function(data) {
@@ -384,10 +468,12 @@ angular.module('myApp')
                     revenue: (movie.domestic_revenue + movie.foreign_revenue),
                     genre: movie.genre[0],
                     title: movie.title,
-                    critique: movie.critic_rating
+                    "Public Rating": movie.public_rating,
+                    "Critic Rating": movie.critic_rating
                 }
             });
             // WHY?
+            // console.log('twice');
             $timeout(function() {
                 $scope.data = movies_data;
             });
@@ -438,12 +524,15 @@ angular.module('myApp')
                         }
                         return d3.format('.2f')(prefix.scale(d)) + prefix.symbol;
                     }
+                },
+                xAxis: {
+                    staggerLabels: true
                 }
                 /*,
-                                tooltipContent: function(type, x, y, e, graph) { //return html content
-                                    // console.log(e.point.movie);
-                                    console.log(arguments);
-                                }*/
+                                                tooltipContent: function(type, x, y, e, graph) { //return html content
+                                                    // console.log(e.point.movie);
+                                                    console.log(arguments);
+                                                }*/
             }
         };
 
@@ -486,23 +575,23 @@ angular.module('myApp')
 
             // d3.csv('data/cars.csv', function(data) {
             // $scope.data = data;
-            var movies_data = $rootScope.movies_db().limit(70).map(function(record, recordNum){
-                return {
-                    // release_date: record.release_date,
-                    production_cost: record.production_cost,
-                    domestic_revenue: record.domestic_revenue,
-                    public_rating: record.public_rating,
-                    critic_rating: record.critic_rating,
-                    director: record.director,
-                    runtime: record.runtime,
-                    actor: record.actor_names[0],
-                    genre: record.genre[0],
-                    title: record.title
-                }
-            })
-            // "title", "production_cost", "domestic_cost", "foreign_revenue", "public_rating", "critic_rating", "runtime", "director");
-            // console.log('MOVIES', movies_data);
-            // var dimensions = ['director', 'title', 'runtime'];
+            var movies_data = $rootScope.movies_db().limit(79).map(function(record, recordNum) {
+                    return {
+                        // release_date: record.release_date,
+                        production_cost: record.production_cost,
+                        domestic_revenue: record.domestic_revenue,
+                        public_rating: record.public_rating,
+                        critic_rating: record.critic_rating,
+                        director: record.director,
+                        runtime: record.runtime,
+                        actor: record.actor_names[0],
+                        genre: record.genre[0],
+                        title: record.title
+                    }
+                })
+                // "title", "production_cost", "domestic_cost", "foreign_revenue", "public_rating", "critic_rating", "runtime", "director");
+                // console.log('MOVIES', movies_data);
+                // var dimensions = ['director', 'title', 'runtime'];
             $scope.data = movies_data;
             var blue_to_brown = d3.scale.linear()
                 .domain([0, 200000000])
@@ -528,7 +617,7 @@ angular.module('myApp')
                     .render()
                     .shadows()
                     .reorderable()
-                    .on('brushend', function(data){
+                    .on('brushend', function(data) {
                         console.log(data);
                     })
                     .brushMode("1D-axes"); // enable brushing

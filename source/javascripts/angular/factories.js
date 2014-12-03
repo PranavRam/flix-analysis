@@ -6,7 +6,6 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
         productionRevenue: 'production'
       },
       actorName: ["Steven Spielberg"],
-      directorName: "Steven Spielberg",
       updateCelebrityList: function(list){
         // if(this.results.indexOf(name) === -1){
           this.actorName = list;

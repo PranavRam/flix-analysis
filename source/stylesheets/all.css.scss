@@ -1,5 +1,7 @@
+//= require d3.parcoords.css
 //= require nvd3/nv.d3.css
-//= require angular-treemap.scss
+//= require isteven-angular-multiselect/angular-multi-select.css
+
 @import "semantic-ui";
 @charset "utf-8";
 
@@ -58,5 +60,9 @@
 .sticky-wrapper {
   .ui.menu {
     z-index: 3000 !important;
+  }
+  .checkboxLayer {
+    max-height: 300px !important;
+    overflow-y: scroll !important;
   }
 }

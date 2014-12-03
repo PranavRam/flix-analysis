@@ -36,44 +36,6 @@ title: Flix Analysis
           <div class="ui form">
             <div class="grouped inline fields">
               <div class="field">
-                <div class="ui radio checkbox">
-                  <input radio type="radio" name="name" ng-model="critique_genre" value="genre">
-                  <label>Genre</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input radio type="radio" name="name" ng-model="critique_genre" value="critique">
-                  <label>Critique</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="ui form">
-            <div class="grouped inline fields">
-              <div class="field">
-                <!-- <div>Bubble Color</div>
-                <br> -->
-                <div class="ui radio checkbox">
-                  <input type="radio" name="name1" ng-model="actor_director" value="actor">
-                  <label>Actor</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio"name="name1" ng-model="actor_director" value="director">
-                  <label>Director</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="ui form">
-            <div class="grouped inline fields">
-              <div class="field">
                 <!-- <div>Bubble Size</div>
                 <br> -->
                 <div class="ui radio checkbox">
@@ -90,14 +52,27 @@ title: Flix Analysis
             </div>
           </div>
         </div>
-        <div class="right menu">
+        <!-- <div class="right menu"> -->
           <div class="item">
-            <div class="ui icon input">
+            <!-- <div class="ui icon input">
               <input class="typeahead" type="text" placeholder="Search...">
               <i class="search link icon"></i>
+            </div> -->
+            <div 
+                multi-select 
+                input-model="celebrities"
+                button-label="name"         
+                item-label="name" 
+                tick-property="ticked" 
+                orientation="vertical"
+                helper-elements="none filter reset"
+                group-property="multiSelectGroup"
+                on-item-click="updateCelebrities(data)"
+                output-model="selectedCelebrities"
+            >
             </div>
           </div>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>

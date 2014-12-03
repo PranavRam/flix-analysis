@@ -221,6 +221,43 @@ angular.module('myApp').directive('bubbleChart', function() {
     }
 });
 
+angular.module('myApp').directive('paralleld3', function() {
+
+    var blue_to_brown = d3.scale.linear()
+      .domain([9, 50])
+      .range(["steelblue", "brown"])
+      .interpolate(d3.interpolateLab);
+
+    var color = function(d) { return blue_to_brown(d['economy (mpg)']); };
+
+    var link = function($scope, $el, $attrs) {
+        // console.log($el[0]);
+        var parcoords = d3.parcoords()($el[0]);
+        function update() {
+           if(typeof $scope.data != 'undefined'){
+            console.log($el);
+            parcoords
+                .color(color)
+                .alpha(0.4)
+                .data($scope.data)
+                /*.height(600)
+                .width(960)*/
+                .render()
+                .shadows()
+                .reorderable()
+                .brushMode("1D-axes");  // enable brushing
+            }
+        }
+        $scope.$watch('data', update);
+    }
+    return {
+        template: "<div></div>",
+        restrict: 'EA',
+        link: link,
+        replace: true
+    }
+});
+
 angular.module('myApp').directive('graphd3plus', function() {
 
     var link = function($scope, $el, $attrs) {

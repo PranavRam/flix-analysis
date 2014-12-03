@@ -7,13 +7,13 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
       },
       actorName: ["Steven Spielberg"],
       directorName: "Steven Spielberg",
-      updateCelebrityList: function(name){
-        if(this.results.indexOf(name) === -1){
-          this.actorName.push(name);
+      updateCelebrityList: function(list){
+        // if(this.results.indexOf(name) === -1){
+          this.actorName = list;
           this.updateResults();
           // console.log(this.actorName);
           $rootScope.$broadcast('actor:updated',this.results);
-        }
+        // }
       },
       setGenreCritique: function(name){
         this.options.genreCritique = name;

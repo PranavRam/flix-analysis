@@ -6,6 +6,7 @@
 //= require typeahead.js/dist/bloodhound.js
 //= require typeahead.js/dist/typeahead.jquery.js
 //= require angular/angular.js
+//= require isteven-angular-multiselect/angular-multi-select.js
 //= require d3/d3.js
 //= require nvd3/nv.d3.js
 //= require d3plus/d3plus.full.min.js
@@ -13,6 +14,7 @@
 //= require semantic-ui
 //= require angular-treemap
 //= require angular/app
+//= require d3.parcoords.js
 //= require angular/directives
 //= require angular/factories
 //= require angular/controllers

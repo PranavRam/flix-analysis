@@ -1,1 +1,1 @@
-angular.module('myApp', ['nvd3']);
+angular.module('myApp', ['nvd3', 'multi-select']);

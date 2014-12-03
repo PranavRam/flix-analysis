@@ -1,12 +1,15 @@
 <div class="ui pointing secondary macro menu">
-  <a class="active red item" data-tab="graph">Industry Network</a>
-  <a class="blue item" data-tab="parallel">Parallel Coordinates View</a>
+  <a class="active red item" data-tab="parallel">Parallel Coordinates View</a>
+  <a class="blue item" data-tab="graph">Industry Network</a>
 </div>
-<div class="ui active tab segment" data-tab="graph">
-  <div ng-controller="graphCtrl">
-      <!-- <graphd3plus data="data"></graphd3plus> -->
+<div class="ui active tab segment" data-tab="parallel">
+  <div ng-controller="parallelCtrl">
+    <!-- <div paralleld3 style="width:960px;height:200px;" data="data"></div> -->
+    <div id="parcoords" class="parcoords" style="width:1695px;height:800px;"></div>
   </div>
 </div>
-<div class="ui tab segment" data-tab="parallel">
-  <h4>Parallel</h4>
+<div class="ui tab segment" data-tab="graph">
+  <div ng-controller="graphCtrl">
+    <!-- <graphd3plus data="data"></graphd3plus> -->
+  </div>
 </div>

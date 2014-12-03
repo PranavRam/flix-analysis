@@ -3,7 +3,7 @@ angular.module('myApp').controller('macroCtrl', ['$rootScope', '$scope', '$http'
         $('.macro.menu .item').tab({
             // tabs are inside of this element
             context: $('#macro-view'),
-            history : false
+            history: false
         });
     }
 }]);
@@ -13,8 +13,8 @@ angular.module('myApp').controller('microCtrl', ['$rootScope', '$scope', '$http'
         $('.micro.menu .item').tab({
             // tabs are inside of this element
             context: $('#micro-view'),
-            history : false,
-            onTabLoad: function(tabPath, parameterArray, historyEvent){
+            history: false,
+            onTabLoad: function(tabPath, parameterArray, historyEvent) {
                 $scope.currentTab = tabPath;
                 // console.log($scope.currentTab);
             }
@@ -111,16 +111,58 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
         dataFactory.options.productionRevenue = value;
     });
     $scope.onLoad = function() {
-        $("#sticker").sticky({
-            topSpacing: 10,
-            getWidthFrom: '.fifteen.wide.column > .row'
+            $("#sticker").sticky({
+                topSpacing: 10,
+                getWidthFrom: '.fifteen.wide.column > .row'
+            });
+        }
+        // $scope.selectedCelebrities = [];
+    $scope.updateCelebrities = function(data) {
+        console.log($scope.selectedCelebrities);
+        var names = $scope.selectedCelebrities.map(function(item) {
+            return item.name;
         });
+        dataFactory.updateCelebrityList(names);
     }
     dataFactory.promise.then(function() {
-        var actorNames = _.uniq(_.flatten($rootScope.movies_db().select('actor_names')));
-        var directorNames = _.uniq($rootScope.movies_db().select('director'));
+        var actorNames = _.uniq(_.flatten($rootScope.movies_db().limit(100).select('actor_names')));
+        var directorNames = _.uniq($rootScope.movies_db().limit(100).select('director'));
+
+        var celebrities = [];
+        celebrities.push({
+            name: '<strong>Actors</strong>',
+            multiSelectGroup: true
+        });
+        angular.forEach(actorNames, function(value) {
+            celebrities.push({
+                name: value,
+                ticked: function() {
+                    return value == dataFactory.actorName[0]
+                }()
+            });
+        });
+        celebrities.push({
+            multiSelectGroup: false
+        });
+        celebrities.push({
+            name: '<strong>Directors</strong>',
+            multiSelectGroup: true
+        });
+        angular.forEach(directorNames, function(value) {
+            celebrities.push({
+                name: value,
+                ticked: function() {
+                    return value == dataFactory.actorName[0]
+                }()
+            });
+        });
+        celebrities.push({
+            multiSelectGroup: false
+        });
+        $scope.celebrities = celebrities;
+        // console.log($scope.celebrities);
         // console.log(actorNames);
-        var actors = new Bloodhound({
+        /*var actors = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             // `states` is an array of state names defined in "The Basics"
@@ -140,9 +182,9 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
                     value: director
                 };
             })
-        });
+        });*/
         // kicks off the loading/processing of `local` and `prefetch`
-        actors.initialize();
+        /*actors.initialize();
         directors.initialize();
 
         $('.typeahead').typeahead({
@@ -173,7 +215,7 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
                 // console.log('1', datum.value);
             }
             // console.log(obj, datum, name);
-        });
+        });*/
     }, function(error) {});
     // $('.ui.radio.checkbox').checkbox();
 }]);
@@ -305,8 +347,8 @@ angular.module('myApp')
 
         var updateData = function() {
             var movies_data = dataFactory.results
-            // _.sortBy(movies_data, function(o) { return o.release_date; })
-            // console.log(movies_data);
+                // _.sortBy(movies_data, function(o) { return o.release_date; })
+                // console.log(movies_data);
             var movies_d = movies_data.map(function(movie) {
                 return {
                     x: movie.release_date,
@@ -346,23 +388,23 @@ angular.module('myApp')
                 }
             });
             // WHY?
-            $timeout(function(){
+            $timeout(function() {
                 $scope.data = movies_data;
             });
         };
 
         dataFactory.promise.then(function(data) {
-            updateData();
+            // updateData();
             $scope.$on('actor:updated', function(event, data) {
                 // you could inspect the data to see if what you care about changed, or just update your own scope
                 updateData();
             });
-            /*$scope.$watch(function() {
+            $scope.$watch(function() {
                 return dataFactory.options.productionRevenue;
             }, function(n, o) {
-                // console.log(dataFactory.options.productionRevenue);
+                console.log(dataFactory.options.productionRevenue);
                 updateData();
-            });*/
+            });
         }, function(error) {
 
         });
@@ -423,6 +465,75 @@ angular.module('myApp')
                 "key": "International",
                 "values": foreign
             }];
+        };
+
+        dataFactory.promise.then(function(data) {
+            updateData();
+            $scope.$on('actor:updated', function(event, data) {
+                // you could inspect the data to see if what you care about changed, or just update your own scope
+                updateData();
+            });
+        }, function(error) {
+
+        });
+    }])
+    .controller('parallelCtrl', ['dataFactory', '$rootScope', '$scope', function(dataFactory, $rootScope, $scope) {
+        var updateData = function() {
+            /*var movies_data = dataFactory.results;
+            // console.log(movies_data);
+            $scope.data = [];*/
+            // };
+
+            // d3.csv('data/cars.csv', function(data) {
+            // $scope.data = data;
+            var movies_data = $rootScope.movies_db().limit(70).map(function(record, recordNum){
+                return {
+                    // release_date: record.release_date,
+                    production_cost: record.production_cost,
+                    domestic_revenue: record.domestic_revenue,
+                    public_rating: record.public_rating,
+                    critic_rating: record.critic_rating,
+                    director: record.director,
+                    runtime: record.runtime,
+                    actor: record.actor_names[0],
+                    genre: record.genre[0],
+                    title: record.title
+                }
+            })
+            // "title", "production_cost", "domestic_cost", "foreign_revenue", "public_rating", "critic_rating", "runtime", "director");
+            // console.log('MOVIES', movies_data);
+            // var dimensions = ['director', 'title', 'runtime'];
+            $scope.data = movies_data;
+            var blue_to_brown = d3.scale.linear()
+                .domain([0, 200000000])
+                .range(["red", "green"])
+                .interpolate(d3.interpolateLab);
+
+            var color = function(d) {
+                return blue_to_brown(d['domestic_revenue']);
+            };
+
+            // console.log($el[0]);
+            var parcoords = d3.parcoords()('#parcoords');
+            // function update() {
+            if (typeof $scope.data != 'undefined') {
+                // console.log($el);
+                parcoords
+                // .dimensions(dimensions)
+                    .color(color)
+                    .alpha(0.4)
+                    .data($scope.data)
+                    /*.height(600)
+                    .width(960)*/
+                    .render()
+                    .shadows()
+                    .reorderable()
+                    .on('brushend', function(data){
+                        console.log(data);
+                    })
+                    .brushMode("1D-axes"); // enable brushing
+            }
+            // }
         };
 
         dataFactory.promise.then(function(data) {

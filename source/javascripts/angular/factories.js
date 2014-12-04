@@ -13,7 +13,7 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
           this.actorName = list;
           this.updateResults();
           // console.log(this.actorName);
-          $rootScope.$broadcast('actor:updated',list);
+          $rootScope.$broadcast('actor:updated',this.results, list);
         // }
       },
       updateMovieList: function(list){
@@ -21,12 +21,12 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
           this.selectedMovies = list;
           this.results = $rootScope.movies_db({title: {has: list}}).get();
           // console.log(this.actorName);
-          $rootScope.$broadcast('actor:updated',this.results);
+          $rootScope.$broadcast('actor:updated',this.results, list);
         // }
       },
       setGenreCritique: function(name){
         this.options.genreCritique = name;
-        $rootScope.$broadcast('genre_critique:updated',data);
+        $rootScope.$broadcast('genre_critique:updated',name);
       },
       updateResults: function(){
         this.results = $rootScope.movies_db([{

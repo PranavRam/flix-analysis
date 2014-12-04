@@ -340,10 +340,10 @@ angular.module('myApp').directive('graphd3plus', function() {
             }
         }
         $scope.$watch('data', update);
-        $scope.$on('actor:updated', function(event, data) {
+        $scope.$on('actor:updated', function(event, data, list) {
             // console.log('yo', data);
-            if(data.length == 1){
-                visualization.focus(data).draw();
+            if(list.length == 1){
+                visualization.focus(list).draw();
             }
             // you could inspect the data to see if what you care about changed, or just update your own scope
             // visualization.focus("data")

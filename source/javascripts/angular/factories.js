@@ -13,7 +13,7 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
           this.actorName = list;
           this.updateResults();
           // console.log(this.actorName);
-          $rootScope.$broadcast('actor:updated',this.results);
+          $rootScope.$broadcast('actor:updated',list);
         // }
       },
       updateMovieList: function(list){

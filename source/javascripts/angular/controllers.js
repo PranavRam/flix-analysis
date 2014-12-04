@@ -90,8 +90,10 @@ angular.module('myApp').controller('graphCtrl', ['$rootScope', '$scope', '$http'
     });
 
     $scope.cb = function(name) {
-        // console.log(name);
+        // console.log('doggy');
         // console.log($rootScope.movies_db({title: name}).count());
+        if(_.intersection(dataFactory.actorName, name).length > 0)
+            return;
         if($rootScope.movies_db({title: name}).count() == 0 && name.length > 0){
             dataFactory.updateCelebrityList(name);
         }
@@ -554,7 +556,7 @@ angular.module('myApp')
             // console.log('twice');
             $timeout(function() {
                 $scope.data = movies_data;
-                console.log(movies_data);
+                // console.log(movies_data);
             });
         };
 

@@ -313,15 +313,18 @@ angular.module('myApp').directive('graphd3plus', function() {
                     // .text({"id":"name"})
                     .legend(false)
                     .height(600)
-                    .focus({
-                        tooltip: true,
-                        value: "Brad Pitt"
-                    }, $scope.cb)
+                    .focus("Brad Pitt", $scope.cb)
                     .draw();
                 // console.log('GRAPH', visualization.data());
             }
         }
         $scope.$watch('data', update);
+        $scope.$on('actor:updated', function(event, data) {
+            // console.log('yo', data);
+            visualization.focus(data).draw();
+            // you could inspect the data to see if what you care about changed, or just update your own scope
+            // visualization.focus("data")
+        });
     }
     return {
         template: '<div></div>',

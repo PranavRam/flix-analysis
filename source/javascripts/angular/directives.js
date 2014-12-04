@@ -174,7 +174,14 @@ angular.module('myApp').directive('scatterPlot', function() {
                             "Revenue": "revenue"
                         }]
                     }, {
-                        "method": "color",
+                        "method": function(value){
+                            if(value == "celebrity"){
+                                visualization.depth(0).id("title").id({"solo":[]}).color("celebrity").draw();
+                            }
+                            else{
+                                visualization.depth(0).id(["genre", "title"]).color("genre").draw();
+                            }
+                        },
                         "type": "drop",
                         "value": ["genre", "celebrity"]
                     }, {
@@ -195,14 +202,28 @@ angular.module('myApp').directive('scatterPlot', function() {
         $scope.$on('selected_movie:updated', function(event, data) {
             // console.log('yo', data);
             // you could inspect the data to see if what you care about changed, or just update your own scope
-            if (data.length > 0) {
-                visualization.depth(0).id({
-                    "solo": data
-                }).depth(1).draw();
-            } else {
-                visualization.id({
-                    "solo": []
-                }).depth(0).draw();
+            if(visualization.color() == "genre"){
+
+                if (data.length > 0) {
+                    visualization.depth(0).id({
+                        "solo": data
+                    }).depth(1).draw();
+                } else {
+                    visualization.id(["genre", "title"]).id({
+                        "solo": []
+                    }).depth(0).draw();
+                }
+            }
+            else {
+                if (data.length > 0) {
+                    visualization.depth(0).id({
+                        "solo": data
+                    }).draw();
+                } else {
+                    visualization.id("title").id({
+                        "solo": []
+                    }).depth(0).draw();
+                }
             }
         });
     }

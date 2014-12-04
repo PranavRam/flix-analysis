@@ -301,23 +301,24 @@ angular.module('myApp').directive('graphd3plus', function() {
             .container(d3.select($el[0]))
 
         function update() {
-            console.log('graph');
-            if (typeof $scope.data != 'undefined') {
+            // console.log('graph');
+            if (typeof $scope.data != 'undefined' && typeof $scope.data.nodes != 'undefined' && typeof $scope.data.links != 'undefined') {
                 visualization
                     .type("network")
                     .data($scope.data.nodes)
                     .edges($scope.data.links)
-                    // .size("connections")
+                    .size("connections")
                     .color("type")
                     .id("name")
                     // .text({"id":"name"})
                     .legend(false)
                     .height(600)
-                    /*.focus({
+                    .focus({
                         tooltip: true,
-                        value: "Steven Spielberg"
-                    }, $scope.cb)*/
+                        value: "Brad Pitt"
+                    }, $scope.cb)
                     .draw();
+                // console.log('GRAPH', visualization.data());
             }
         }
         $scope.$watch('data', update);

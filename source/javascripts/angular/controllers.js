@@ -37,6 +37,7 @@ angular.module('myApp').controller('movieInfoCtrl', ['$rootScope', '$scope', '$h
             // console.log(dataFactory.actorName);
             // updateData();
             $scope.movies = dataFactory.results;
+            $scope.data = $scope.movies[0];
         })
     }, function(error) {
 
@@ -49,32 +50,52 @@ angular.module('myApp').controller('movieInfoCtrl', ['$rootScope', '$scope', '$h
     }
 }]);
 
-angular.module('myApp').controller('graphCtrl', ['$scope', '$http', function($scope, $http) {
+angular.module('myApp').controller('graphCtrl', ['$rootScope', '$scope', '$http', 'dataFactory', function($rootScope, $scope, $http, dataFactory) {
     // $scope.data = {};
-    $http.get('data/films.json').
+    $http.get('data/finalsubset2links.json').
+    // $http.get('data/dagre.json').
     success(function(data, status, headers, config) {
-        $scope.data = data;
-        /*$scope.data.nodes = $scope.data.nodes.map(function(node) {
+        // $scope.data = data;
+        nodes = data.nodes.map(function(node) {
             node.connections = 0;
             return node;
-        })*/
-        $scope.data.links = $scope.data.links.map(function(link) {
-            // $scope.data.nodes[link.source].connections++;
-            // $scope.data.nodes[link.target].connections++;
+        })
+// console.log(data);
+        var nodes = data.nodes;
+        // console.log("DATA", nodes.length, data.links.length);
+        // console.log(nodes);
+        var links = data.links.map(function(link, i) {
+           /* if(typeof data.nodes[link.target] === 'undefined'){
+                return null;
+            }*/
+            data.nodes[link.source].connections++;
+            data.nodes[link.target].connections++;
+            // console.log(data.nodes[link.target].name);
             return {
-                source: $scope.data.nodes[link.source],
-                target: $scope.data.nodes[link.target]
-            }
+                source: data.nodes[link.source],
+                target: data.nodes[link.target]
+            };
         });
-        // console.log($scope.data.links);
+        links = _.compact(links);
+        // console.log(links);
+        $scope.data = {};
+        $scope.data = {
+            nodes: nodes,
+            links: links
+        };
+        // console.log('GRAPHSSSS',$scope.data);
     }).
     error(function(data, status, headers, config) {
         // log error
     });
 
     $scope.cb = function(name) {
-        console.log(name);
-        return name;
+        // console.log(name);
+        // console.log($rootScope.movies_db({title: name}).count());
+        if($rootScope.movies_db({title: name}).count() == 0 && name.length > 0){
+            dataFactory.updateCelebrityList(name);
+        }
+        // return name;
     }
 }]);
 
@@ -194,6 +215,7 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
                 }()
             });
         });
+        celebrities.push({name: 'Christian Bale', ticked: false});
         celebrities.push({
             multiSelectGroup: false
         });
@@ -209,6 +231,7 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
                 }()
             });
         });
+        celebrities.push({name: 'Christopher Nolan', ticked: false});
         celebrities.push({
             multiSelectGroup: false
         });

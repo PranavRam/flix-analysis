@@ -6,12 +6,20 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
         productionRevenue: 'production'
       },
       // actorName: ["Steven Spielberg"],
-      actorName: ["Brad Pitt", "Morgan Freeman"],
+      actorName: ["Brad Pitt"],
       selectedMovies:[],
       updateCelebrityList: function(list){
         // if(this.results.indexOf(name) === -1){
           this.actorName = list;
           this.updateResults();
+          // console.log(this.actorName);
+          $rootScope.$broadcast('actor:updated',this.results);
+        // }
+      },
+      updateMovieList: function(list){
+        // if(this.results.indexOf(name) === -1){
+          this.selectedMovies = list;
+          this.results = $rootScope.movies_db({title: {has: list}}).get();
           // console.log(this.actorName);
           $rootScope.$broadcast('actor:updated',this.results);
         // }

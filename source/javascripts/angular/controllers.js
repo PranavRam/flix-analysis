@@ -118,7 +118,7 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
     $scope.common = {};
     $scope.common.checked = false;
     $scope.$watch('common.checked', function(value){
-        console.log(value);
+        // console.log(value);
         $rootScope.$broadcast('common_movies_checkbox:updated', value);
     });
     $scope.$watch('critique_genre', function(value) {
@@ -136,13 +136,31 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
         }
         // $scope.selectedCelebrities = [];
     $scope.updateCelebrities = function(data) {
-        console.log($scope.selectedCelebrities);
+        // console.log($scope.selectedCelebrities);
         var names = $scope.selectedCelebrities.map(function(item) {
             return item.name;
         });
         dataFactory.updateCelebrityList(names);
+        var movies = dataFactory.results;
+        movies = movies.map(function(movie){
+            return {
+                name: movie.title,
+                ticked: true
+            };
+        });
+        // console.log(movies);
+        $scope.movies = movies;
     }
-    dataFactory.promise.then(function() {
+
+    $scope.updateMovies = function(data) {
+        console.log($scope.selectedMovies);
+        var movies = $scope.selectedMovies.map(function(item) {
+            return item.name;
+        });
+        dataFactory.updateMovieList(movies);
+    }
+
+    function update(){
         var actorNames = _.uniq(_.flatten($rootScope.movies_db().limit(200).select('actor_names')));
         // var genreNames = _.uniq(_.flatten($rootScope.movies_db().select('genre')));
         // var genreNames = _.uniq(_.flatten(dataFactory.results.genre[0]));
@@ -195,6 +213,10 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
             multiSelectGroup: false
         });
         $scope.celebrities = celebrities;
+    }
+    dataFactory.promise.then(function() {
+        update();
+        
         // console.log($scope.celebrities);
         // console.log(actorNames);
         /*var actors = new Bloodhound({
@@ -562,11 +584,11 @@ angular.module('myApp')
                 xAxis: {
                     staggerLabels: true
                 },
-                barColor: function(d, i) {
+               /* barColor: function(d, i) {
                         var colors = d3.scale.category20().range();
                         var rnd = Math.floor(Math.random() * colors.length)
                         return colors[rnd];
-                    }
+                    }*/
                     /*,
                                                     tooltipContent: function(type, x, y, e, graph) { //return html content
                                                         // console.log(e.point.movie);
@@ -612,6 +634,7 @@ angular.module('myApp')
         });
     }])
     .controller('parallelCtrl', ['dataFactory', '$rootScope', '$scope', function(dataFactory, $rootScope, $scope) {
+        var parcoords;
         var updateData = function() {
             /*var movies_data = dataFactory.results;
             // console.log(movies_data);
@@ -637,7 +660,7 @@ angular.module('myApp')
             var movies_data = dataFactory.results.map(function(record, recordNum) {
                 var mo = [];
                 var total = record.actor_names.length;
-                for(i = 0; i<total; i++){
+                for(i = 0; i<1; i++){
                     mo.push({
                         release_date: record.release_date,
                         production_cost: record.production_cost,
@@ -786,7 +809,7 @@ angular.module('myApp')
                     parcoords.highlight(common_movies);
                 }
                 else {
-                    parcoords.clear("highlight");
+                    parcoords.unhighlight(common_movies);
                 }
             });
         }, function(error) {

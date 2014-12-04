@@ -147,14 +147,16 @@ angular.module('myApp').directive('scatterPlot', function() {
                         "solo": []
                     })
                     .x($scope.production_revenue) // key for x-axis
-                    .y("Critic Rating") // key for y-axis
-                    .color("genre")
                     .aggs({
-                        "Critic Rating": "mean",
-                        "Public Rating": "mean",
                         "production": "mean",
                         "revenue": "mean"
                     })
+                    .y("Critic Rating") // key for y-axis
+                    .aggs({
+                        "Critic Rating": "mean",
+                        "Public Rating": "mean"
+                    })
+                    .color("genre")
                     .height(450)
                     .ui([{
                         "method": "y",

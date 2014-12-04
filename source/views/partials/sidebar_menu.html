@@ -11,6 +11,12 @@
         <div class="header">Director</div>
         {{data.director}}
       </div>
+      <div class="item">
+        <div class="header">Actors</div>
+        <ul ng-repeat="actor in data.actor_names">
+          <li>{{actor}}</li>
+        </ul>
+      </div>
   	  <div class="item">
   	    <div class="header">Genre</div>
   	    {{data.genre[0]}}

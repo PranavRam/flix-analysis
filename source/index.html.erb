@@ -90,16 +90,20 @@ title: Flix Analysis
             </div>
           </div>
           <div class="item">
-            <h5>Critic Range</h5>
-            <div range-slider min="0" max="100" model-min="min" model-max="max" step="5" style="width:200px;"></div>
-          </div>
-          <div class="item">
-            <h5>Production Cost Range</h5>
-            <div range-slider min="0" max="200" model-min="min" model-max="max" step="5" style="width:200px;"></div>
-          </div>
-          <div class="item">
-            <h5>Revenue Range</h5>
-            <div range-slider min="0" max="200" model-min="min" model-max="max" step="5" style="width:200px;"></div>
+            <h5>Movie Selection</h5>
+            <div 
+                multi-select 
+                input-model="movies"
+                button-label="name"         
+                item-label="name" 
+                tick-property="ticked" 
+                orientation="vertical"
+                max-labels="5"
+                helper-elements="all none filter reset"
+                on-item-click="updateMovies(data)"
+                output-model="selectedMovies"
+            >
+            </div>
           </div>
         <!-- </div> -->
       </div>

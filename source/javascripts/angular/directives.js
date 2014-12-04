@@ -58,12 +58,11 @@ angular.module('myApp').directive('pieChart', function() {
                     .size("value")
                     .height(450)
                     .ui([{
-                        "method": function(value){
+                        "method": function(value) {
                             console.log(arguments);
-                            if(value === "name"){
+                            if (value === "name") {
                                 visualization.id(["name", "genre"]).draw();
-                            }
-                            else {
+                            } else {
                                 visualization.id("genre").draw();
                             }
                         },
@@ -142,53 +141,68 @@ angular.module('myApp').directive('scatterPlot', function() {
                 visualization
                     .data($scope.data) // data to use with the visualization
                     .type("scatter") // visualization type
-                    .id(["genre","title"]) // key for which our data is unique on
-                    .depth(1)
-                    .id({"solo": "Munich"})
+                    .id(["genre", "title"]) // key for which our data is unique on
+                    .depth(0)
+                    .id({
+                        "solo": []
+                    })
                     .x($scope.production_revenue) // key for x-axis
                     .y("Critic Rating") // key for y-axis
                     .color("genre")
                     .aggs({
-                        "critique": "mean",
+                        "Critic Rating": "mean",
+                        "Public Rating": "mean",
                         "production": "mean",
                         "revenue": "mean"
                     })
                     .height(450)
-                    .ui([
-                        {
-                            "method": "y",
-                            "label": "Rating",
-                            "value": [{
-                                "Critic": "Critic Rating"
-                            }, {
-                                "Public": "Public Rating"
-                            }]
+                    .ui([{
+                        "method": "y",
+                        "label": "Rating",
+                        "value": [{
+                            "Critic": "Critic Rating"
                         }, {
-                            "method": "x",
-                            "value": [{
-                                "Production": "production"
-                            }, {
-                                "Revenue": "revenue"
-                            }]
-                        },{
-                            "method" : function(value){
-                              visualization.id(["genre", "title"]).id({ "solo" : [] }).depth(0).draw();
-                            },
-                            "label": "Reset",
-                            "type": "button",
-                            "value"  : [""]
-                        }
-                    ])
+                            "Public": "Public Rating"
+                        }]
+                    }, {
+                        "method": "x",
+                        "value": [{
+                            "Production": "production"
+                        }, {
+                            "Revenue": "revenue"
+                        }]
+                    }, {
+                        "method": "color",
+                        "type": "drop",
+                        "value": ["genre", "celebrity"]
+                    }, {
+                        "method": function(value) {
+                            visualization.id({
+                                "solo": []
+                            }).depth(0).draw();
+                        },
+                        "label": "Reset",
+                        "type": "button",
+                        "value": [""]
+                    }])
                     // .focus({value: {title: "Minority Report"}})
                     .draw() // finally, draw the visualization!*/
             }
         }
         $scope.$watch('data', update);
-        /*setTimeout(function(){
-            console.log('draw it!');
-            visualization.focus({value: "Minority Report"}).draw();
-        }
-            , 10000);*/
+        $scope.$on('selected_movie:updated', function(event, data) {
+            // console.log('yo', data);
+            // you could inspect the data to see if what you care about changed, or just update your own scope
+            if (data.length > 0) {
+                visualization.depth(0).id({
+                    "solo": data
+                }).depth(1).draw();
+            } else {
+                visualization.id({
+                    "solo": []
+                }).depth(0).draw();
+            }
+        });
     }
     return {
         template: '<div></div>',
@@ -226,7 +240,7 @@ angular.module('myApp').directive('bubbleChart', function() {
             }
         }
         $scope.$watch('data', update);
-        $scope.$on('microtab:change', function(e){
+        $scope.$on('microtab:change', function(e) {
             update();
         });
     }

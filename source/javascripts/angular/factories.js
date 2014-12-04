@@ -6,6 +6,7 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
         productionRevenue: 'production'
       },
       actorName: ["Steven Spielberg"],
+      selectedMovies:[],
       updateCelebrityList: function(list){
         // if(this.results.indexOf(name) === -1){
           this.actorName = list;
@@ -26,6 +27,17 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
           }, {
               director: factory.actorName
           }]).get();
+      },
+      selectMovie: function(names){
+        this.selectedMovies = names;
+        $rootScope.$broadcast('selected_movie:updated',names);
+      },
+      setMovies: function(titles){
+        if(titles.length > 0){
+          this.results = $rootScope.movies_db({title: titles}).get();
+          // console.log(this.results);
+          $rootScope.$broadcast('selected_movie:updated',titles);
+        }
       }
     };
 

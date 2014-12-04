@@ -714,7 +714,7 @@ angular.module('myApp')
                 return mo;
             });
             movies_data = _.flatten(movies_data);
-            console.log('Movies!!!!',movies_data);
+            // console.log('Movies!!!!',movies_data);
             // "title", "production_cost", "domestic_cost", "foreign_revenue", "public_rating", "critic_rating", "runtime", "director");
             // console.log('MOVIES', movies_data);
             // var dimensions = ['director', 'title', 'runtime'];
@@ -739,8 +739,8 @@ angular.module('myApp')
                 // .color(color)
                     .alpha(0.4)
                     .data($scope.data)
-                    /*.height(600)
-                    .width(960)*/
+                    // .height(600)
+                    .width($('.fifteen.wide.column .row')[0].clientWidth)
                     .render()
                     .shadows()
                     .reorderable()

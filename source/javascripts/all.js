@@ -23,6 +23,7 @@
 //= require angular/controllers
 
 $(function() {
+    // $('#parcoords').width($('.fifteen.wide.column .row')[0].clientWidth);
     $('.ui.sidebar').sidebar();
     // $('.ui.radio.checkbox').checkbox();
     $('#sidebar-menu').on('click', function() {

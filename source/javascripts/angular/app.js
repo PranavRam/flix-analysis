@@ -1,1 +1,1 @@
-angular.module('myApp', ['nvd3', 'multi-select', 'ui-rangeSlider']);
+angular.module('myApp', ['nvd3', 'multi-select', 'pretty-checkable']);

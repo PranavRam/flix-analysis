@@ -72,8 +72,9 @@ title: Flix Analysis
                 output-model="selectedCelebrities"
             >
             </div>
+            <pretty-checkbox ng-model="common.checked" label="'Common Movies'"></pretty-checkbox>
           </div>
-          <div class="item">
+          <!-- <div class="item">
             <h5>Genre Selection</h5>
             <div 
                 multi-select 
@@ -82,13 +83,13 @@ title: Flix Analysis
                 item-label="name" 
                 tick-property="ticked" 
                 orientation="vertical"
-                max-labels="3"
+                max-labels="2"
                 helper-elements="all none filter reset"
                 on-item-click="updateGenres(data)"
                 output-model="selectedGenres"
             >
             </div>
-          </div>
+          </div> -->
           <div class="item">
             <h5>Movie Selection</h5>
             <div 
@@ -98,7 +99,7 @@ title: Flix Analysis
                 item-label="name" 
                 tick-property="ticked" 
                 orientation="vertical"
-                max-labels="5"
+                max-labels="3"
                 helper-elements="all none filter reset"
                 on-item-click="updateMovies(data)"
                 output-model="selectedMovies"

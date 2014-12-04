@@ -1,0 +1,23 @@
+{
+    "name": "angular-pretty-checkable",
+    "main": [
+        "src/angular-pretty-checkable.js",
+        "dist/pretty-checkable.css",
+        "images/sprites-sfa68604977.png"
+    ],
+    "ignore": [
+        "source",
+        "spec",
+        ".bowerrc",
+        ".gitignore",
+        ".jshintignore",
+        ".jshintrc",
+        "bower.json",
+        "gruntfile.js",
+        "package.json",
+        "README.md"
+    ],
+    "dependencies": {
+        "angular": "~1.2.13"
+    }
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html ng-app="myapp">
+  <head>
+    <title>Angular Pretty Checkable</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../dist/pretty-checkable.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="../src/angular-pretty-checkable.js"></script>
+    <script src="js/app.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Angular Pretty Checkable Demo</h1>
+      </div>
+      <div class="row" ng-controller="checkdemo">
+        <div class="col-md-8 col-sm-12">
+          This is the demo of Angular Pretty Checkable. A pretty checkable directive based on jQuery Pretty Checkable.
+          <br><br>
+          View source on this page to see the various options available (also available in the github repo).
+          <br><br>
+          For more information and full documents see <a href="https://github.com/itslenny/angular-pretty-checkable">Github</a>
+   
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="well">
+            <h4>Checkboxes</h4>
+            <pretty-checkbox class="clearfix" ng-model="myModel.one" label="'This is one'"></pretty-checkbox>
+            <pretty-checkbox class="clearfix" ng-model="myModel.two" label="'This one too'"></pretty-checkbox>
+            <pretty-checkbox class="clearfix" ng-model="myModel.three" label="'This one three'"></pretty-checkbox>
+            <pretty-checkbox class="clearfix" ng-model="myModel.four" label="'This is disabled'" disabled="true"></pretty-checkbox>
+            <pretty-checkbox class="clearfix" ng-model="myModel.five" label="'This is disabled / checked'" disabled="true"></pretty-checkbox>
+            
+            <br><br>
+            Values: {{myModel.one}}, {{myModel.two}}, {{myModel.three}}, {{myModel.four}}, {{myModel.five}}
+          </div>
+          <div class="well">
+            <h4>Checkboxes (custom values)</h4>
+            <pretty-checkbox class="clearfix" ng-model="myModel.yahoo" value="'yahoo (label optional)'"></pretty-checkbox>
+            <pretty-checkbox class="clearfix" ng-model="myModel.wahoo" value="'wahoo'" label="'This is wahoo'"></pretty-checkbox>
+            <pretty-checkbox class="clearfix" ng-model="myModel.tahoo" value="'tahoo'" label="'This is tahoo'"></pretty-checkbox>
+            <br><br>
+            Values: {{myModel.yahoo}}, {{myModel.wahoo}}, {{myModel.tahoo}}
+          </div>
+          <div class="well">
+            <h4>Radios</h4>
+            <pretty-radio class="clearfix" value="'one'" ng-model="myModel.radio" label="'This is one'"></pretty-radio>
+            <pretty-radio class="clearfix" value="'two'" ng-model="myModel.radio" label="'This one too (disabled)'" disabled="true"></pretty-radio>
+            <pretty-radio class="clearfix" value="'three'" ng-model="myModel.radio" label="'This one three'"></pretty-radio>
+            <pretty-radio class="clearfix" value="'four'" ng-model="myModel.radio" label="'This one four'"></pretty-radio>
+            <br><br>
+            Value: {{myModel.radio}}
+          </div>
+          <div class="well">
+            <h4>Radios in ngRepeat</h4>
+            <pretty-radio class="clearfix" ng-repeat="radio in radios" value="$index+1" ng-model="myModel.radios" label="radio"></pretty-radio>
+            <br><br>
+            Value: {{myModel.radios}}
+          </div>
+          <div class="well">
+            <h4>Check / radio with Label Left</h4>
+            <pretty-radio class="clearfix" value="'one'" label-left="true" ng-model="myModel.radio" label="'This is one'"></pretty-radio>
+            <pretty-checkbox class="clearfix" label-left="true" ng-model="myModel.two" label="'This one too'"></pretty-checkbox>
+          </div>    
+          <div class="well">
+            <h4>Custom HTML labels</h4>
+            <pretty-checkbox class="clearfix" ng-model="myModel.html1" label="false"><label>this is my <i>label</i> with <span style="color: red;">html</span></label></pretty-checkbox>
+            <pretty-radio class="clearfix" value="0" ng-model="myModel.html2" label="false"><label>this is my <span style="font-size: 1.2em;color: green;">other label</span> with <span style="color: blue;">html</span></label></pretty-radio>
+            <pretty-radio class="clearfix" value="1" ng-model="myModel.html2" label="false"><label style="background: #555555; color: white; padding: 2px 4px;">this is my <span style="font-size: 1.2em;color: yellow;">third label</span> with <span style="color: orange;">html</span></label></pretty-radio>            
+            
+            <br><br>
+            Values: {{myModel.html1}}, {{myModel.html2}}
+          </div>  
+
+          <div class="well">
+            <h4>ng-required</h4>
+            <form name="termsForm">
+                <pretty-checkbox class="clearfix" ng-model="myModel.terms" ng-required="true" value="'Yes'" label="'Agree to terms?'"></pretty-checkbox>
+            </form>
+            <br><br>
+            Values: {{myModel.terms}} &mdash; Form Valid: {{termsForm.$valid}}
+          </div>      
+        </div>
+      </div>
+    </div>        
+  </body>
+</html>

@@ -5,7 +5,8 @@ angular.module('myApp').factory('dataFactory', ['$rootScope', '$http', function(
         genreCritique: 'genre',
         productionRevenue: 'production'
       },
-      actorName: ["Steven Spielberg"],
+      // actorName: ["Steven Spielberg"],
+      actorName: ["Brad Pitt", "Morgan Freeman"],
       selectedMovies:[],
       updateCelebrityList: function(list){
         // if(this.results.indexOf(name) === -1){

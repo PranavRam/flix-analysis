@@ -115,9 +115,12 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
     $scope.critique_genre = dataFactory.options.genreCritique;
     $scope.production_revenue = 'production';
 
-    $scope.min = 0;
-    $scope.max = 100;
-
+    $scope.common = {};
+    $scope.common.checked = false;
+    $scope.$watch('common.checked', function(value){
+        console.log(value);
+        $rootScope.$broadcast('common_movies_checkbox:updated', value);
+    });
     $scope.$watch('critique_genre', function(value) {
         // console.log('hey there');
         dataFactory.options.genreCritique = value;
@@ -142,6 +145,7 @@ angular.module('myApp').controller('menuCtrl', ['$rootScope', '$scope', '$http',
     dataFactory.promise.then(function() {
         var actorNames = _.uniq(_.flatten($rootScope.movies_db().limit(200).select('actor_names')));
         // var genreNames = _.uniq(_.flatten($rootScope.movies_db().select('genre')));
+        // var genreNames = _.uniq(_.flatten(dataFactory.results.genre[0]));
         var genreNames = _.uniq(_.flatten(_.pluck(dataFactory.results, 'genre')));
         var directorNames = _.uniq($rootScope.movies_db().limit(200).select('director'));
         var movies = dataFactory.results;
@@ -631,7 +635,23 @@ angular.module('myApp')
                     }
                 });*/
             var movies_data = dataFactory.results.map(function(record, recordNum) {
-                return {
+                var mo = [];
+                var total = record.actor_names.length;
+                for(i = 0; i<total; i++){
+                    mo.push({
+                        release_date: record.release_date,
+                        production_cost: record.production_cost,
+                        domestic_revenue: record.domestic_revenue,
+                        public_rating: record.public_rating,
+                        critic_rating: record.critic_rating,
+                        director: record.director,
+                        runtime: record.runtime,
+                        actor: record.actor_names[i],
+                        genre: record.genre[0],
+                        title: record.title
+                    });
+                }
+                /*return {
                     release_date: record.release_date,
                     production_cost: record.production_cost,
                     domestic_revenue: record.domestic_revenue,
@@ -642,8 +662,11 @@ angular.module('myApp')
                     actor: record.actor_names[0],
                     genre: record.genre[0],
                     title: record.title
-                }
+                }*/
+                return mo;
             });
+            movies_data = _.flatten(movies_data);
+            console.log('Movies!!!!',movies_data);
             // "title", "production_cost", "domestic_cost", "foreign_revenue", "public_rating", "critic_rating", "runtime", "director");
             // console.log('MOVIES', movies_data);
             // var dimensions = ['director', 'title', 'runtime'];
@@ -733,6 +756,38 @@ angular.module('myApp')
             $scope.$on('actor:updated', function(event, data) {
                 // you could inspect the data to see if what you care about changed, or just update your own scope
                 updateData();
+            });
+            $scope.$on('common_movies_checkbox:updated', function(event, data) {
+                // you could inspect the data to see if what you care about changed, or just update your own scope
+                if(data){
+                    var common_movies = $rootScope.movies_db({actor_names: {hasAll: dataFactory.actorName}}).get();
+                    console.log(common_movies);
+                    common_movies = common_movies.map(function(record, recordNum) {
+                        var mo = [];
+                        var total = record.actor_names.length;
+                        for(i = 0; i<1; i++){
+                            mo.push({
+                                release_date: record.release_date,
+                                production_cost: record.production_cost,
+                                domestic_revenue: record.domestic_revenue,
+                                public_rating: record.public_rating,
+                                critic_rating: record.critic_rating,
+                                director: record.director,
+                                runtime: record.runtime,
+                                actor: record.actor_names[i],
+                                genre: record.genre[0],
+                                title: record.title
+                            });
+                            return mo;
+                        }
+                    });
+                    common_movies = _.flatten(common_movies);
+                    // console.log(common_movies);
+                    parcoords.highlight(common_movies);
+                }
+                else {
+                    parcoords.clear("highlight");
+                }
             });
         }, function(error) {
 

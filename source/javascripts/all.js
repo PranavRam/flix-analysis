@@ -9,6 +9,7 @@
 //= require angular/angular.js
 //= require angular-rangeslider/angular.rangeSlider.js
 //= require isteven-angular-multiselect/angular-multi-select.js
+//= require angular-pretty-checkable/src/angular-pretty-checkable.js
 //= require d3/d3.js
 //= require nvd3/nv.d3.js
 //= require d3plus/d3plus.full.js
